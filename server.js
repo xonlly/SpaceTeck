@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
   	res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	res.header("Access-Control-Allow-Credentials", "false");
 	res.header("X-Engine", "Devteck-Engine");
-	
+
 	next();
 });
 
@@ -36,14 +36,19 @@ io.use(function(socket, next){
 	next();
 });
 
+var world = {};
+map.saveMap('default',(world = map.genMap()));
+
 // Nouveau thread:
 setTimeout(function () {
-	
+
 	io.on('connection', function (socket) {
 		console.log('Nouveau '+socket.id+' '+socket.request.connection.remoteAddress);
 
+
+
 		players[socket.id] = { socket: socket, pts: 0, cheat: 10 };
-		
+
 		// Modification de la zone de spawn pour chaque nouveau spawn.
 		playerSpawn = playerSpawn > 1500 ? 0 : playerSpawn + 150;
 
@@ -61,6 +66,12 @@ setTimeout(function () {
 
 		// Gestion des players.
 		socket.on('player', function (data) {
+
+			players[socket.id]['poss'] = {
+				x : data.donnees.x,
+				y : data.donnees.y
+			};
+
 			data = map.movePlayer(data);
 			io.emit('player', data);
 		});
@@ -88,3 +99,10 @@ setTimeout(function () {
 
 
 }, 0);
+
+setInterval(function () { // Envoi de la map pour chaque player
+	for (var key in players) {
+		console.log(players[key].poss);
+		players[key].socket.emit('mapZone', map.sendWorldByPlayerMove(world, players[key].poss.x, players[key].poss.y));
+	}
+}, 1000);

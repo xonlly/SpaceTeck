@@ -57,4 +57,8 @@ function StartPlayer() {
 		GameObject.Multiplayer.update(data.pid, data.donnees);
 
 	}.bind(GameObject));
+
+	socket.on('mapZone', function (data) {
+		GameObject.MapServeur = data;
+	});
 };

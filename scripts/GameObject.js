@@ -1,5 +1,5 @@
 GameObject = {
-	
+	MapServeur : {},
 	addListener : function () {
 
 		document.addEventListener("mousemove", function (e) { 

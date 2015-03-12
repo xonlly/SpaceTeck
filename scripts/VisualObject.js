@@ -269,6 +269,21 @@ var VisualObject = {
 				this.ctx.restore();	
 			}
 			
+			for (var key in GameObject.MapServeur) {
+				this.ctx.save();
+					this.ctx.translate(
+						GameObject.MapServeur[key].x,
+						GameObject.MapServeur[key].y
+						);
+					this.ctx.drawImage(
+						imagesLoaded[GameObject.MapServeur[key].imageName].image, 
+						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width-100)/2,
+						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height-100)/2, 
+						imagesLoaded[GameObject.MapServeur[key].imageName].image.width-100, imagesLoaded[GameObject.MapServeur[key].imageName].image.height-100
+					);
+				this.ctx.restore();
+			}
+			
 			// Plannette.
 			// Aura autour de la planete.
 			if (!GameObject.Player.notVisible(500,600)) {
@@ -290,6 +305,8 @@ var VisualObject = {
 					this.ctx.beginPath();
 				this.ctx.restore();
 			
+				
+
 				this.ctx.save();
 
 					this.ctx.translate(500,600);
