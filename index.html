@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<style>
+		/** { padding:0; margin:0; top:0; left:0; bottom:0; right:0;}*/
+		body {
+			background: black;
+			margin:0;
+			
+		}
+		canvas {
+			cursor:none;
+		}
+
+		.playerDisplay {
+			position: absolute;
+			right:0;
+			bottom:0;
+			width: 500px;
+			height: 100px;
+			/*background: gray;*/
+			color: white;
+
+		}
+
+		.gameZone {
+			position:absolute;
+			top:0;
+			bottom:0;
+			left:0;
+			right:0;
+		}
+
+		#tchatZone {
+
+			overflow:auto;
+			height: 150px;
+			margin-bottom:23px;
+			color: white;
+			border-radius: 10px 0px 0px 0px;
+			font-size: 12px;
+			padding:5px;
+		}
+
+		.tchatStyle {
+			position:fixed;
+			width: 500px; 
+			background:rgba(0, 0, 0, 0.58) none repeat ; 
+			bottom:0; 
+			right:0; 
+			z-index: 999; 
+			overflow: hidden; 
+			border-radius: 10px 0px 0px 0px; 
+			border-left: 1px solid gray;
+			border-top: 1px solid gray;
+		}
+
+		#TextChat {
+			width:100%;
+			bottom:0;
+			position:fixed;
+			border:0px;
+		}
+		</style>
+		<script src="http://192.168.11.146:8183/socket.io/socket.io.js"></script>
+		<script src="scripts/TchatObject.js"></script>
+		<script src="scripts/VisualObject.js"></script>
+		<script src="scripts/GameObject.js"></script>
+		<script src="scripts/Functions.js"></script>
+		<script>
+		var orientationMousePlayer 	= 0;
+		var player 					= {};
+		var MotorRotate 			= 0;
+
+		var listKeysPush			= {}; // Liste des keys du clavier
+		var listItems 				= {}; // Liste des items de la map
+
+		var pattern;
+		var listMapsContext = {};
+
+		var PlannetSize 	= 190;
+		var ColorPlannet 	= 100;
+		var ColorDirection 	= false;
+
+		var WorldImage 			= new Image();
+		var ShipImage 			= new Image();
+		var LuneImage 			= new Image();
+		var MapBackgroundImage 	= new Image();
+		var EtoilesImage 		= new Image();
+
+		var LoadingNB 		= 1;
+		var LoadingCur 		= 0;
+		var degrees 		= 0;
+		var canvasWidth 	= 0;
+		var canvasHeight 	= 0;
+		var socket;
+
+  		var ForceSizeHeight = 800;
+		var ForceSizeWidth  = 1400;
+
+		var ForceSizeHeight = false;
+		var ForceSizeWidth  = false;
+
+		var imagesLoaded = {};
+
+		function Load() {
+			imagesToLoad = {
+				backgroundRedBlue : '245765.jpg',
+				backgroundOrangeBlue : '387332.jpg',
+				backgroundVioletVert : '397249.jpg',
+				backgroundOrangeViolet : '501296.jpg',
+				backgroundOraViolet : '548279.jpg',
+
+				planeteBlue : '110000.png',
+				planeteVenus : 'Mod_4_Image_3_venus_NASA.png',
+				planeteEarth : 'Mod_4_Image_4_earth_NASA.png',
+				planeteMars : 'Mod_4_Image_5_mars_NASA.png',
+				planeteJupiter : 'Mod_4_Image_6_jupiter_NASA.png',
+				planeteSaturn : 'Mod_4_Image_7_saturn_NASA.png',
+				planeteNeptune : 'Mod_4_Image_9_neptune_NASA.png',
+
+				asteroide : 'asteroide.png',
+				asteroideBlue : 'asteroide1.png',
+				asteroidesBare : 'asteroides.png',
+				asteroidesGroupe : 'asteroides1.png',
+				asteroideSeul : 'asteroides2.png',
+
+				WorldImage : 'stock_planet_techno_fractal_by_svetlanaivanova-d5bg82w.png',
+				LuneImage : 'Lune_ico.png',
+				ShipImage : 'ship_fighter_01_final.png',
+				MapBackgroundImage : 'mg_2637.jpg',
+				EtoilesImage : 'etoiles.png',
+
+			};
+
+			
+			for (var key in imagesToLoad) {
+				LoadingNB++;
+				imagesLoaded[key] = {};
+				imagesLoaded[key].image = new Image();
+				imagesLoaded[key].image.src = 'images/'+imagesToLoad[key];
+				imagesLoaded[key].image.onload = function (e) {
+					console.log(e);
+					CheckToStart();
+					document.querySelector("#loadingZone").innerHTML += '['+e.timeStamp.toFixed(2)+'ms] - <i>'+e.target.attributes[0].nodeValue+" OK</i><br />";
+				}.bind(key);
+			}
+
+			
+			
+
+			if (false) {
+				var botsDebiles = [];
+
+				// Bots débiles.
+				var btName = 'Debile ';
+				for (var i = 0; i <= 50; i++) {
+					botsDebiles[i] = GameObject.Player.set(btName+i);
+				};
+
+				setInterval(function () {
+					
+					for (var i = 0; i <= 50; i++) {
+							/*if (botsDebiles[i] == undefined) {
+								delete botsDebiles[i];
+								return;
+							}*/
+							if (Math.floor((Math.random() * 2)+1) == 2) {
+								botsDebiles[i].vitesse += botsDebiles[i].vitesse > 15 ? 15 : Math.floor((Math.random() * 2)+1);
+								botsDebiles[i].mouse.orientation = botsDebiles[i].orientation += Math.floor((Math.random() * 35) + 1);;
+								
+							} else {
+								botsDebiles[i].mouse.orientation = botsDebiles[i].orientation -= Math.floor((Math.random() * 35) + 1);;
+								botsDebiles[i].vitesse -= botsDebiles[i].vitesse < 0 ? 0 : Math.floor((Math.random() * 2)+1);
+							}
+
+							if (Math.floor((Math.random() * 2)+1) == 2) {
+								GameObject.Bullet.set(btName+i);
+							}
+							GameObject.Multiplayer.update(btName+i, botsDebiles[i]);
+					}
+					
+					
+					
+
+				}, 1000);
+			}
+
+			//GameObject.newPlayer();
+
+			document.querySelector("#toGo").onclick = function () {  
+				CheckToStart();
+			};
+
+		};
+		</script>
+		<script src="scripts/Frames.js"></script>
+		<title>Test</title>
+	</head>
+	<body onload="Load();">
+		<div id="LoadDomZone">
+			<div style="color: gray;"><b style="font-size: 50px">Chargement </b>[<span id="loadingEtat" style="color:red">...</span>]
+				<p id="loadingZone"></p>
+				<p><input type="text" placeholder="Pseudo" id="pseudo" /><input type="button" value="Go!" id="toGo" /></p>
+			</div>
+		</div>
+		<div id="sizeZone">
+			<canvas id="mapZone" class="gameZone"></canvas>
+			<canvas id="gameZone" class="gameZone"></canvas>
+			<canvas id="gameInterface" class="gameZone"></canvas>
+			<div class="tchatStyle">
+				<div id="tchatZone">
+					<span class="msg"><b>Xonlly: </b> Good Game !</span><br />
+					<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Jeux toujours en développement</span><br />
+					<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Bientôt sur GitHub !</span><br />
+
+				</div>
+				<input id="TextChat" type="text" placeholder="Message" />
+			</div>
+		</div>
+	</body>
+</html>
