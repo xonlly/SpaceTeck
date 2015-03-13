@@ -2,15 +2,15 @@ GameObject = {
 	MapServeur : {},
 	addListener : function () {
 
-		document.addEventListener("mousemove", function (e) { 
+		document.addEventListener("mousemove", function (e) {
 			this.moveCurrentEvent(e);
 		}.bind(this));
 
-		document.addEventListener("keydown", function (e) { 
+		document.addEventListener("keydown", function (e) {
 			this.Keyboard.set(e, 'down');
 		}.bind(this));
 
-		document.addEventListener("keypress", function (e) { 
+		document.addEventListener("keypress", function (e) {
 			//e.preventDefault();
 			if (e.charCode == 114) {
 				if (player[GameObject.Player.config.me].die) {
@@ -19,13 +19,13 @@ GameObject = {
 			}
 		}.bind(this));
 
-		document.addEventListener("keyup", function (e) { 
+		document.addEventListener("keyup", function (e) {
 			this.Keyboard.set(e, 'up');
 		}.bind(this));
 
-		document.addEventListener("click", function (e) { 
+		document.addEventListener("click", function (e) {
 			e.preventDefault();
-			this.Bullet.set(GameObject.Player.config.me); 
+			this.Bullet.set(GameObject.Player.config.me);
 
 		}.bind(this));
 
@@ -46,7 +46,7 @@ GameObject = {
 	},
 
 
-	Bullet : 
+	Bullet :
 	{
 		config : {
 			intBullet : 0,
@@ -114,7 +114,7 @@ GameObject = {
 		}
 	},
 
-	Physicx : 
+	Physicx :
 	{
 		isColision : function (x, y, objectSize, playerid)
 		{
@@ -133,14 +133,14 @@ GameObject = {
 				if (shipDist - elementSize < listItems[key].distance && shipDist != 0) {
 					return key;
 				}
-			
+
 			}
 		},
 
 		getGravityEffect : function (x, y, vitesse, orientation)
 		{
 			for (var key in listItems) {
-				
+
 				if (listItems[key].isMe) {
 					if (GameObject.Player.isActive(key)) { continue; }
 				}
@@ -160,13 +160,13 @@ GameObject = {
 					//force = (((shipDist-listItems[key].distance)/listItems[key].gravityRadius)*1.9)*4;
 					force = 5;
 					newOrientation = orientation - orentationZone / 23;
-					x += 
-						(Math.cos((orientation)*Math.PI/180) + 
-						Math.cos((orentationZone)*Math.PI/180)/force)/2 * 
+					x +=
+						(Math.cos((orientation)*Math.PI/180) +
+						Math.cos((orentationZone)*Math.PI/180)/force)/2 *
 						-vitesse;
 
-					y += 
-						(Math.sin((orientation)*Math.PI/180) + 
+					y +=
+						(Math.sin((orientation)*Math.PI/180) +
 						Math.sin((orentationZone)*Math.PI/180)/force)/2 *
 						-vitesse;
 
@@ -175,9 +175,9 @@ GameObject = {
 						);
 
 					return {
-						x: x, 
-						y: y, 
-						orientation: newOrientation, 
+						x: x,
+						y: y,
+						orientation: newOrientation,
 						vitesse: vitesse
 					};
 				}
@@ -185,9 +185,9 @@ GameObject = {
 			}
 
 			return {
-				x: x, 
-				y: y, 
-				orientation: orientation, 
+				x: x,
+				y: y,
+				orientation: orientation,
 				vitesse: vitesse
 			};
 		},
@@ -214,7 +214,7 @@ GameObject = {
 
 	},
 
-	Math : 
+	Math :
 	{
 		getAngleByPositions : function (x, y, x2, y2)
 		{
@@ -232,22 +232,22 @@ GameObject = {
 
 	},
 
-	Keyboard : 
+	Keyboard :
 	{
-		push : function () 
+		push : function ()
 		{
 			for (var keyCode in listKeysPush) {
 				switch (listKeysPush[keyCode]) {
 					case 90:
 					case 38: // Up
-					
+
 						if (player[GameObject.Player.config.me].vitesse < 15) {
 							player[GameObject.Player.config.me].vitesse += 0.3;
 						}
 						player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
 						player[GameObject.Player.config.me].orientation 	= player[GameObject.Player.config.me].mouse.orientation;
 					break;
-					
+
 					case 83:
 					case 40: // Down
 						if (player[GameObject.Player.config.me].vitesse > -5) {
@@ -287,11 +287,11 @@ GameObject = {
 		getDefaultArray : function ()
 		{
 			return {
-				x: 0, 
-				y: 0, 
+				x: 0,
+				y: 0,
 				distance: 0,
-				gravity: false, 
-				gravityRadius: 0, 
+				gravity: false,
+				gravityRadius: 0,
 				gravityLevel: 100,
 				isMe: false
 			};
@@ -329,7 +329,7 @@ GameObject = {
 		config: {
 			me: false,
 			spawnDist: 400,
-			spawnCurrent : 50 
+			spawnCurrent : 50
 		},
 
 		notVisible : function (x, y)
@@ -357,24 +357,24 @@ GameObject = {
 				lastorientation: 0,
 				frame: {},
 				pseudo: 'NaaaN',
-				mouse: { 
-					x:0, 
-					y:0, 
-					orientation:0, 
+				mouse: {
+					x:0,
+					y:0,
+					orientation:0,
 					original: {
-						x: 0, 
+						x: 0,
 						y: 0
 					}
 				},
-				stats: { 
-					life: 100, 
-					mana: 100 
+				stats: {
+					life: 100,
+					mana: 100
 				},
 				die: false,
 				demage: false,
-				spawn: { 
-					x: 100, 
-					y: spawn 
+				spawn: {
+					x: 100,
+					y: spawn
 				},
 				masse: 500 // ko
 			};
@@ -383,7 +383,7 @@ GameObject = {
 			arrItem.isMe = id;
 			arrItem.x = 100,
 			arrItem.y = this.config.spawnCurrent,
-			arrItem.distance = 50;
+			arrItem.distance = 30;
 			GameObject.ItemsMap.setItem(id, arrItem);
 
 			return player[id];
@@ -423,13 +423,13 @@ GameObject = {
 
 				if (player[key].lastorientation != 0) {
 
-					player[key].x += 
-						(Math.cos((player[key].lastorientation)*Math.PI/180) + 
-						Math.cos((player[key].orientation)*Math.PI/180)/2) * 
+					player[key].x +=
+						(Math.cos((player[key].lastorientation)*Math.PI/180) +
+						Math.cos((player[key].orientation)*Math.PI/180)/2) *
 						-player[key].vitesse;
 
-					player[key].y += 
-						(Math.sin((player[key].lastorientation)*Math.PI/180) + 
+					player[key].y +=
+						(Math.sin((player[key].lastorientation)*Math.PI/180) +
 						Math.sin((player[key].orientation)*Math.PI/180)/2) *
 						-player[key].vitesse;
 
@@ -450,7 +450,7 @@ GameObject = {
 				// Envoi des informations au ship.
 				GameObject.ItemsMap.moveItem(key, player[key].x, player[key].y);
 				player[key].frame = {
-					x: player[key].x, 
+					x: player[key].x,
 					y: player[key].y,
 				};
 
@@ -459,7 +459,7 @@ GameObject = {
 
 		},
 
-		regenMana : function ()          
+		regenMana : function ()
 		{
 			for (var key in player) {
 				if (GameObject.Player.isActive(key)) { continue; }
@@ -495,7 +495,7 @@ GameObject = {
 				} else { // Je suis die
 
 				}
-				
+
 
 				player[pid].die = true;
 				player[pid].vitesse = 0;
@@ -545,31 +545,31 @@ GameObject = {
 
 	drawEngine : function ()
 	{
-		
-		this.Player.refresh(); 
+
+		this.Player.refresh();
 		if (GameObject.Player.config.me) {
-			this.changeMouseAngle(GameObject.Player.config.me); 
+			this.changeMouseAngle(GameObject.Player.config.me);
 		}
-		
 
-		setTimeout(function () { 
-			this.WorldRotate(); 
+
+		setTimeout(function () {
+			this.WorldRotate();
 		}.bind(this), 0);
 
-		setTimeout(function () { 
-			this.Bullet.clean(); 
+		setTimeout(function () {
+			this.Bullet.clean();
 		}.bind(this), 0);
 
-		setTimeout(function () { 
-			this.Bullet.update(); 
+		setTimeout(function () {
+			this.Bullet.update();
 		}.bind(this), 0);
 	},
 
 	Engine : function () {
 		setInterval(function () {
-			
+
 			socket.emit('player', {pid: GameObject.Player.config.me, donnees: player[GameObject.Player.config.me]});
-			
+
 		}.bind(this), 40);
 
 		setInterval(function () {
@@ -578,7 +578,7 @@ GameObject = {
 		}.bind(this), 100);
 	},
 
-	
+
 
 	WorldRotate : function () {
 		degrees += 0.04;
@@ -586,7 +586,7 @@ GameObject = {
 		ctx.beginPath();
 		if (ColorPlannet<10) {
 			ColorDirection = false;
-		} 
+		}
 
 		if (ColorPlannet > 130) {
 			ColorDirection = true;
@@ -608,7 +608,7 @@ GameObject = {
 		);
 	},
 
-	
+
 	moveCurrentEvent : function (e) {
 		if (GameObject.Player.config.me) {
 			player[GameObject.Player.config.me].mouse.original.x = e.clientX;

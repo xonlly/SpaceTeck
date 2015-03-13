@@ -45,8 +45,6 @@ setTimeout(function () {
 	io.on('connection', function (socket) {
 		console.log('Nouveau '+socket.id+' '+socket.request.connection.remoteAddress);
 
-
-
 		players[socket.id] = { socket: socket, pts: 0, cheat: 10 };
 
 		// Modification de la zone de spawn pour chaque nouveau spawn.
@@ -102,7 +100,9 @@ setTimeout(function () {
 
 setInterval(function () { // Envoi de la map pour chaque player
 	for (var key in players) {
-		console.log(players[key].poss);
-		players[key].socket.emit('mapZone', map.sendWorldByPlayerMove(world, players[key].poss.x, players[key].poss.y));
+		if (typeof players[key].poss != 'undefined') {
+			console.log(players[key].poss);
+			players[key].socket.emit('mapZone', map.sendWorldByPlayerMove(world, players[key].poss.x, players[key].poss.y));
+		}
 	}
 }, 1000);

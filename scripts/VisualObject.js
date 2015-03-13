@@ -44,7 +44,7 @@ var VisualObject = {
 			ctx2.canvas.height = ForceSizeHeight || window.innerHeight-2;
 
 			ctx2.drawImage(
-			imagesLoaded['MapBackgroundImage'].image, 
+			imagesLoaded['backgroundOrangeViolet'].image, 
 			0, 
 			0
 			);
@@ -192,12 +192,31 @@ var VisualObject = {
 
 		this.ctx.save();
 
+
+			this.ctx.save();
+
+				this.ctx.translate(-player[GameObject.Player.config.me].frame.x/4 + this.ctx.canvas.width/2 -20, -player[GameObject.Player.config.me].frame.y/4 + this.ctx.canvas.height/2);
+				this.ctx.rect(player[GameObject.Player.config.me].frame.x/4 - this.ctx.canvas.width/2 -20, player[GameObject.Player.config.me].frame.y/4 - this.ctx.canvas.height/2, this.ctx.canvas.width, this.ctx.canvas.height);		
+				this.ctx.globalAlpha = 0.4;
+				this.ctx.fillStyle = pattern;
+				this.ctx.fill();
+			this.ctx.restore();
+
+			this.ctx.save();
+				this.ctx.translate(-player[GameObject.Player.config.me].frame.x/2 + this.ctx.canvas.width/2 -70, -player[GameObject.Player.config.me].frame.y/2 + this.ctx.canvas.height/2);
+				this.ctx.rect(player[GameObject.Player.config.me].frame.x/2 - this.ctx.canvas.width/2 -70, player[GameObject.Player.config.me].frame.y/2 - this.ctx.canvas.height/2, this.ctx.canvas.width, this.ctx.canvas.height);		
+				this.ctx.globalAlpha = 0.7;
+				this.ctx.fillStyle = pattern;
+				this.ctx.fill();
+			this.ctx.restore();
+
 			this.ctx.translate(-player[GameObject.Player.config.me].frame.x + this.ctx.canvas.width/2, -player[GameObject.Player.config.me].frame.y + this.ctx.canvas.height/2);
 
 			this.ctx.save();
 				this.ctx.rect(player[GameObject.Player.config.me].frame.x - this.ctx.canvas.width/2, player[GameObject.Player.config.me].frame.y - this.ctx.canvas.height/2, this.ctx.canvas.width, this.ctx.canvas.height);		
 				this.ctx.fillStyle = pattern;
 				this.ctx.fill();
+
 				//this.ctx.beginPath();
 			this.ctx.restore();
 
@@ -249,21 +268,21 @@ var VisualObject = {
 
 					this.ctx.drawImage(
 						imagesLoaded['ShipImage'].image, 
-						-imagesLoaded['ShipImage'].image.width/5,
-						-imagesLoaded['ShipImage'].image.height/5, 
-						imagesLoaded['ShipImage'].image.width/2.5, 
-						imagesLoaded['ShipImage'].image.height/2.5
+						-imagesLoaded['ShipImage'].image.width/7,
+						-imagesLoaded['ShipImage'].image.height/7, 
+						imagesLoaded['ShipImage'].image.width/3.5, 
+						imagesLoaded['ShipImage'].image.height/3.5
 					);
 
 					this.ctx.beginPath();
 					this.ctx.fillStyle = "rgba(68, 35, 56, "+(player[key].stats.mana/200)+")";
-					this.ctx.arc(0,0,40,0,2*Math.PI);
+					this.ctx.arc(0,0,30,0,2*Math.PI);
 					this.ctx.fill();
 
 					this.ctx.beginPath();
 					this.ctx.rotate(90*Math.PI/120);
 					this.ctx.strokeStyle = "rgba(234, 234, 0, "+(player[key].vitesse/15)+")";
-					this.ctx.arc(0,0,40,0,0.5*Math.PI);
+					this.ctx.arc(0,0,30,0,0.5*Math.PI);
 					this.ctx.stroke();
 
 				this.ctx.restore();	
@@ -277,13 +296,15 @@ var VisualObject = {
 						);
 					this.ctx.drawImage(
 						imagesLoaded[GameObject.MapServeur[key].imageName].image, 
-						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width-100)/2,
-						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height-100)/2, 
-						imagesLoaded[GameObject.MapServeur[key].imageName].image.width-100, imagesLoaded[GameObject.MapServeur[key].imageName].image.height-100
+						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/4,
+						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/4, 
+						imagesLoaded[GameObject.MapServeur[key].imageName].image.width/2, imagesLoaded[GameObject.MapServeur[key].imageName].image.height/2
 					);
+					this.ctx.strokeStyle = "pink";
+					this.ctx.strokeText('P'+GameObject.MapServeur[key].name, 40, -40);
 				this.ctx.restore();
 			}
-			
+
 			// Plannette.
 			// Aura autour de la planete.
 			if (!GameObject.Player.notVisible(500,600)) {
