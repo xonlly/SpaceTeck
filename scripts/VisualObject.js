@@ -268,10 +268,10 @@ var VisualObject = {
 
 					this.ctx.drawImage(
 						imagesLoaded['ShipImage'].image, 
-						-imagesLoaded['ShipImage'].image.width/7,
-						-imagesLoaded['ShipImage'].image.height/7, 
-						imagesLoaded['ShipImage'].image.width/3.5, 
-						imagesLoaded['ShipImage'].image.height/3.5
+						-imagesLoaded['ShipImage'].image.width,
+						-imagesLoaded['ShipImage'].image.height, 
+						imagesLoaded['ShipImage'].image.width/2, 
+						imagesLoaded['ShipImage'].image.height/2
 					);
 
 					this.ctx.beginPath();
