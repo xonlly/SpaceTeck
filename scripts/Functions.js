@@ -13,7 +13,7 @@ function StartPlayer() {
 		alert('Récupération du JS IO impossible :/');
 	}
 
-	socket = io('ws://192.168.11.146:8183');
+	socket = io('ws://'+document.location.hostname+':8183');
 	if (typeof socket == 'undefined') {
 		alert('Arf, impossible d\'ouvrir les sockets :(');
 		return;
