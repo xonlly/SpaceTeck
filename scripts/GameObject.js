@@ -570,7 +570,7 @@ GameObject = {
 
 			socket.emit('player', {pid: GameObject.Player.config.me, donnees: player[GameObject.Player.config.me]});
 
-		}.bind(this), 40);
+		}.bind(this), 20);
 
 		setInterval(function () {
 			// Gestion de l'appui des touches
