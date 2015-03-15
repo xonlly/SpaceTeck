@@ -296,9 +296,9 @@ var VisualObject = {
 						);
 					this.ctx.drawImage(
 						imagesLoaded[GameObject.MapServeur[key].imageName].image, 
-						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width),
-						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height), 
-						imagesLoaded[GameObject.MapServeur[key].imageName].image.width/2, imagesLoaded[GameObject.MapServeur[key].imageName].image.height/2
+						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2,
+						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2, 
+						imagesLoaded[GameObject.MapServeur[key].imageName].image.width, imagesLoaded[GameObject.MapServeur[key].imageName].image.height
 					);
 					this.ctx.strokeStyle = "pink";
 					this.ctx.strokeText('P'+GameObject.MapServeur[key].name, 40, -40);
