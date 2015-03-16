@@ -1,7 +1,7 @@
 
 var VisualObject = {
 	config : {
-		debug : true,
+		debug : false,
 		imagesDebug : {},
 	},
 
@@ -312,31 +312,41 @@ var VisualObject = {
 						GameObject.MapServeur[key].x,
 						GameObject.MapServeur[key].y
 						);
+					var nWidth = (imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2;
+					var nHeight = (imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2;
 					this.ctx.drawImage(
 						imagesLoaded[GameObject.MapServeur[key].imageName].image, 
-						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2,
-						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2, 
+						-nWidth,
+						-nHeight, 
 						imagesLoaded[GameObject.MapServeur[key].imageName].image.width, imagesLoaded[GameObject.MapServeur[key].imageName].image.height
 					);
-					this.ctx.strokeStyle = "pink";
-					this.ctx.strokeText('P'+GameObject.MapServeur[key].name, 40, -40);
+					
 
 					if (VisualObject.config.debug) {
-						if (imagesMapping[GameObject.MapServeur[key].imageName]) {
-							this.ctx.strokeText('Mapped', 40, -30);
-						};
+						this.ctx.save();
+						
 
 						var plan = imagesMapping[GameObject.MapServeur[key].imageName];
-						this.ctx.fillStyle = "#FF0000";
+						this.ctx.fillStyle = "#00FFFF";
 						this.ctx.translate(-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2,
 						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2);
+						this.ctx.globalAlpha = 0.5;
 						for (var keyPx in plan) {
-							this.ctx.fillRect(plan[keyPx].x-4,plan[keyPx].y-4,4,4);
+							this.ctx.fillRect(plan[keyPx].x-2,plan[keyPx].y-2,4,4);
 							this.ctx.beginPath();
 							this.ctx.stroke();
 						}
-						
+
+						this.ctx.restore();
 					}
+
+					this.ctx.strokeStyle = "#009999";
+					if (imagesMapping[GameObject.MapServeur[key].imageName]) {
+							this.ctx.strokeText('Mapped', nWidth, -nHeight+20);
+						};
+					this.ctx.font = 'italic 25pt Calibri';
+					this.ctx.strokeText(GameObject.MapServeur[key].name, nWidth, -nHeight);
+					
 					
 				this.ctx.restore();
 			}

@@ -60,6 +60,9 @@ if (process.argv[2] == 'gen') {
 			asteroidesBare : 'asteroides.png',
 			asteroidesGroupe : 'asteroides1.png',
 			asteroideSeul : 'asteroides2.png',
+
+			WorldImage : 'stock_planet_techno_fractal_by_svetlanaivanova-d5bg82w.png',
+			LuneImage : 'Lune_ico.png',
 		});
 		Mapping.genImagesContact();
 	}
