@@ -111,6 +111,8 @@ _TeamCity*
 # Installshield output folder
 [Ee]xpress/
 node_modules/
+Worlds/*
+
 # DocProject is a documentation generator add-in
 DocProject/buildhelp/
 DocProject/Help/*.HxT

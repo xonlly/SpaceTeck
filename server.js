@@ -5,6 +5,7 @@ var express 	= require('express');
 var app 		= express();
 var server 		= require('http').Server(app);
 var map 		= require('./scripts_server/Map.js');
+var Mapping		= require('./scripts_server/ImageMapping.js');
 
 var config		= {
 	xp : { diePlayerPoints : 50 },
@@ -37,7 +38,33 @@ io.use(function(socket, next){
 });
 
 var world = {};
-map.saveMap('default',(world = map.genMap()));
+
+if (process.argv[2] == 'gen') {
+	if (process.argv[3] == 'map') {
+		map.saveMap('default', map.genMap());
+	}
+
+	if (process.argv[3] == 'mapping') {
+		Mapping.prepare();
+		Mapping.setImages({
+			planeteBlue : '110000.png',
+			planeteVenus : 'Mod_4_Image_3_venus_NASA.png',
+			planeteEarth : 'Mod_4_Image_4_earth_NASA.png',
+			planeteMars : 'Mod_4_Image_5_mars_NASA.png',
+			planeteJupiter : 'Mod_4_Image_6_jupiter_NASA.png',
+			planeteSaturn : 'Mod_4_Image_7_saturn_NASA.png',
+			planeteNeptune : 'Mod_4_Image_9_neptune_NASA.png',
+
+			asteroide : 'asteroide.png',
+			asteroideBlue : 'asteroide1.png',
+			asteroidesBare : 'asteroides.png',
+			asteroidesGroupe : 'asteroides1.png',
+			asteroideSeul : 'asteroides2.png',
+		});
+		Mapping.genImagesContact();
+	}
+}
+world = map.getMap();
 
 // Nouveau thread:
 setTimeout(function () {

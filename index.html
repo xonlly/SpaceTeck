@@ -138,7 +138,8 @@
 		var ForceSizeWidth  = false;
 
 		var imagesLoaded = {};
-
+		var imagesMapping = {};
+		
 		function Load() {
 			imagesToLoad = {
 				backgroundRedBlue : '245765.jpg',
@@ -169,16 +170,51 @@
 
 			};
 
+			var imagestoLoadMapping = {
+				planeteBlue : '110000.png',
+				planeteVenus : 'Mod_4_Image_3_venus_NASA.png',
+				planeteEarth : 'Mod_4_Image_4_earth_NASA.png',
+				planeteMars : 'Mod_4_Image_5_mars_NASA.png',
+				planeteJupiter : 'Mod_4_Image_6_jupiter_NASA.png',
+				planeteSaturn : 'Mod_4_Image_7_saturn_NASA.png',
+				planeteNeptune : 'Mod_4_Image_9_neptune_NASA.png',
+
+				asteroide : 'asteroide.png',
+				asteroideBlue : 'asteroide1.png',
+				asteroidesBare : 'asteroides.png',
+				asteroidesGroupe : 'asteroides1.png',
+				asteroideSeul : 'asteroides2.png',
+			};
+			
+			var http_request = {};
+
 			for (var key in imagesToLoad) {
 				LoadingNB++;
+				console.log(imagestoLoadMapping[key]);
+				if (imagestoLoadMapping[key]) {
+					LoadingNB++;
+				}
 				imagesLoaded[key] = {};
 				imagesLoaded[key].image = new Image();
 				imagesLoaded[key].image.src = 'images/'+imagesToLoad[key];
 				imagesLoaded[key].image.onload = function (e) {
-					console.log(e);
 					CheckToStart();
 					document.querySelector("#loadingZone").innerHTML += '['+e.timeStamp.toFixed(2)+'ms] - <i>'+e.target.attributes[0].nodeValue+" OK</i><br />";
 				}.bind(key);
+				if (imagestoLoadMapping[key]) {
+					http_request[key] = new XMLHttpRequest();
+					http_request[key].onreadystatechange  = function() {
+						if (this.readyState == 4) {
+							CheckToStart();
+							var jsonObj = JSON.parse(this.responseText);
+							document.querySelector("#loadingZone").innerHTML += '[---ms] - <i>Mapping '+jsonObj['name']+' OK</i><br />';
+							imagesMapping[jsonObj['name']] = jsonObj['map'];
+						}
+
+					};
+					http_request[key].open("GET", 'Worlds/'+key+'.map', true);
+   					http_request[key].send();
+				}
 			}
 
 			if (false) {

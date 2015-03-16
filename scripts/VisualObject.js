@@ -1,4 +1,10 @@
+
 var VisualObject = {
+	config : {
+		debug : true,
+		imagesDebug : {},
+	},
+
 	newMap : function () {
 
 
@@ -12,6 +18,18 @@ var VisualObject = {
 		listMapsContext[3] = elem.getContext("2d");
 
 		ctx = listMapsContext[1]; // Save du context pour chaque player.
+
+		/*if (this.config.debug) {
+			for (var keyMap in imagesMapping) {
+				this.config.imagesDebug[keyMap] = {};
+				for (var keyPx in imagesMapping[keyMap]) {
+					if (imagesMapping[keyMap][keyPx].x % 10 == false && imagesMapping[keyMap][keyPx].y % 10 == false) {
+						this.config.imagesDebug[keyMap][keyPx] = { x: imagesMapping[keyMap][keyPx].x, y: imagesMapping[keyMap][keyPx].y };
+					}
+				}
+			}
+			console.log(this.config.imagesDebug);
+		}*/
 
 		ctx.canvas.width  = ForceSizeWidth || window.innerWidth-2;
 			ctx.canvas.height = ForceSizeHeight || window.innerHeight-2;
@@ -302,6 +320,24 @@ var VisualObject = {
 					);
 					this.ctx.strokeStyle = "pink";
 					this.ctx.strokeText('P'+GameObject.MapServeur[key].name, 40, -40);
+
+					if (VisualObject.config.debug) {
+						if (imagesMapping[GameObject.MapServeur[key].imageName]) {
+							this.ctx.strokeText('Mapped', 40, -30);
+						};
+
+						var plan = imagesMapping[GameObject.MapServeur[key].imageName];
+						this.ctx.fillStyle = "#FF0000";
+						this.ctx.translate(-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2,
+						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2);
+						for (var keyPx in plan) {
+							this.ctx.fillRect(plan[keyPx].x-4,plan[keyPx].y-4,4,4);
+							this.ctx.beginPath();
+							this.ctx.stroke();
+						}
+						
+					}
+					
 				this.ctx.restore();
 			}
 

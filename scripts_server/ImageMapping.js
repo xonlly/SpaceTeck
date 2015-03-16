@@ -2,13 +2,16 @@
 
 module.exports = {
 
-	pngjs : false,
+	vars : {
+		pngjs : false,
+		images : {}
+	},
 	prepare : function () {
-		this.pngjs = require('png-js');
+		this.vars.pngjs = require('png-js');
 	},
 
-	convertToJson : function (imageName) {
-		image = new this.pngjs.load(imageName);
+	convertToJson : function (imageName, name, callback) {
+		var image = new this.vars.pngjs.load(imageName);
 		var width 	= image.width;
 		var height 	= image.height;
 		var array 	= [];
@@ -24,8 +27,8 @@ module.exports = {
 	        			a: pixel[idx+3]
 	        		};
 	        		var pixelZone = { x: x, y: y, rgba : rgba};
-	        		if (rgba.a > 120) {
-						array.push(pixelZone);
+	        		if (rgba.a > 120 && x % 10 == false && y % 10 == false) {
+						array.push({x: x, y: y});
 					}
 				}
 			}
@@ -40,8 +43,32 @@ module.exports = {
 				}
 			}
 			console.log('SpeedEnd');*/
-			return array;
+			callback.call(this, name, array);
 		});
+	},
+
+	setImages : function (arr) {
+		this.vars.images = arr;
+	},
+	
+	saveMapping : function (name, map) {
+		var fs = require('fs');
+		var writeStream = fs.createWriteStream(__dirname+'/../Worlds/'+name+'.map');
+		writeStream.write(JSON.stringify({name: name, map: map }));
+		writeStream.close();
+	},
+
+	genImagesContact : function () {
+		var listImages = this.vars.images;
+		for (var key in listImages) {
+			this.convertToJson(
+				__dirname+'/../images/'+listImages[key],
+				key,
+				function (name, data) {
+					this.saveMapping(name, data);
+				}.bind(this));
+			
+		}
 	}
 
 

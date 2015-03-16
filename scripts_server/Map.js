@@ -155,6 +155,12 @@ module.exports = {
 
 	},
 
+	getMap : function () {
+		var fs = require('fs');
+		var obj = JSON.parse(fs.readFileSync(__dirname+'/../Worlds/default.json', 'utf8'));
+		return obj;
+	},
+
 	saveMap : function (name, map) {
 		var fs = require('fs');
 		var writeStream = fs.createWriteStream(__dirname+'/../Worlds/'+name+'.json');
