@@ -305,50 +305,47 @@ var VisualObject = {
 
 				this.ctx.restore();	
 			}
-			
+
 			for (var key in GameObject.MapServeur) {
-				this.ctx.save();
-					this.ctx.translate(
-						GameObject.MapServeur[key].x,
-						GameObject.MapServeur[key].y
+				if  (!GameObject.Player.notVisible(GameObject.MapServeur[key].x, GameObject.MapServeur[key].y)) {
+					this.ctx.save();
+						this.ctx.translate(
+							GameObject.MapServeur[key].x,
+							GameObject.MapServeur[key].y
+							);
+						var nWidth = (imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2;
+						var nHeight = (imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2;
+						this.ctx.drawImage(
+							imagesLoaded[GameObject.MapServeur[key].imageName].image, 
+							-nWidth,
+							-nHeight, 
+							imagesLoaded[GameObject.MapServeur[key].imageName].image.width, imagesLoaded[GameObject.MapServeur[key].imageName].image.height
 						);
-					var nWidth = (imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2;
-					var nHeight = (imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2;
-					this.ctx.drawImage(
-						imagesLoaded[GameObject.MapServeur[key].imageName].image, 
-						-nWidth,
-						-nHeight, 
-						imagesLoaded[GameObject.MapServeur[key].imageName].image.width, imagesLoaded[GameObject.MapServeur[key].imageName].image.height
-					);
-					
 
-					if (VisualObject.config.debug) {
-						this.ctx.save();
-						
+						if (VisualObject.config.debug) {
+							this.ctx.save();
+							var plan = imagesMapping[GameObject.MapServeur[key].imageName];
+							this.ctx.fillStyle = "#00FFFF";
+							this.ctx.translate(-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2,
+							-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2);
+							this.ctx.globalAlpha = 0.5;
+							for (var keyPx in plan) {
+								this.ctx.fillRect(plan[keyPx].x-5,plan[keyPx].y-5,10,10);
+								this.ctx.beginPath();
+								this.ctx.stroke();
+							}
 
-						var plan = imagesMapping[GameObject.MapServeur[key].imageName];
-						this.ctx.fillStyle = "#00FFFF";
-						this.ctx.translate(-(imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2,
-						-(imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2);
-						this.ctx.globalAlpha = 0.5;
-						for (var keyPx in plan) {
-							this.ctx.fillRect(plan[keyPx].x-2,plan[keyPx].y-2,4,4);
-							this.ctx.beginPath();
-							this.ctx.stroke();
+							this.ctx.restore();
 						}
 
-						this.ctx.restore();
-					}
-
-					this.ctx.strokeStyle = "#009999";
-					if (imagesMapping[GameObject.MapServeur[key].imageName]) {
-							this.ctx.strokeText('Mapped', nWidth, -nHeight+20);
-						};
-					this.ctx.font = 'italic 25pt Calibri';
-					this.ctx.strokeText(GameObject.MapServeur[key].name, nWidth, -nHeight);
-					
-					
-				this.ctx.restore();
+						this.ctx.strokeStyle = "#009999";
+						if (imagesMapping[GameObject.MapServeur[key].imageName]) {
+								this.ctx.strokeText('Mapped', nWidth, -nHeight+20);
+							};
+						this.ctx.font = 'italic 25pt Calibri';
+						this.ctx.strokeText(GameObject.MapServeur[key].name, nWidth, -nHeight);
+					this.ctx.restore();
+				}
 			}
 
 			// Plannette.

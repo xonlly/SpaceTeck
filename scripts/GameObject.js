@@ -120,6 +120,7 @@ GameObject = {
 		{
 			elementSize = objectSize == undefined ? 0 : objectSize;
 			playerid = playerid == undefined ? GameObject.Player.config.me : playerid;
+			// Colision avec des items autres:
 			for (var key in listItems) {
 				if (listItems[key].isMe) {
 					if (GameObject.Player.isActive(key)) { continue; }
@@ -134,6 +135,23 @@ GameObject = {
 					return key;
 				}
 
+			}
+
+			// Colision avec la map:
+			for (var key in GameObject.MapServeur) {
+				var nWidth = (imagesLoaded[GameObject.MapServeur[key].imageName].image.width)/2;
+				var nHeight = (imagesLoaded[GameObject.MapServeur[key].imageName].image.height)/2;
+
+				shipDist = Math.sqrt(Math.pow((GameObject.MapServeur[key].x - x), 2) + Math.pow((GameObject.MapServeur[key].y - y), 2));
+				if (shipDist < nWidth + 30 && shipDist != 0) {
+					var imageMapped = imagesMapping[GameObject.MapServeur[key].imageName];
+					for (var keyMap in imageMapped) {
+						shipDistMap = Math.sqrt(Math.pow((GameObject.MapServeur[key].x - nWidth + imageMapped[keyMap].x - x), 2) + Math.pow((GameObject.MapServeur[key].y - nHeight + imageMapped[keyMap].y - y), 2));
+						if (shipDistMap - elementSize < 10 && shipDistMap != 0) {
+							return key;
+						}
+					}
+				}
 			}
 		},
 
@@ -242,7 +260,7 @@ GameObject = {
 					case 38: // Up
 
 						if (player[GameObject.Player.config.me].vitesse < 15) {
-							player[GameObject.Player.config.me].vitesse += 0.3;
+							player[GameObject.Player.config.me].vitesse += 0.35;
 						}
 						player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
 						player[GameObject.Player.config.me].orientation 	= player[GameObject.Player.config.me].mouse.orientation;
@@ -251,7 +269,7 @@ GameObject = {
 					case 83:
 					case 40: // Down
 						if (player[GameObject.Player.config.me].vitesse > -5) {
-							player[GameObject.Player.config.me].vitesse -= 0.4;
+							player[GameObject.Player.config.me].vitesse -= 0.6;
 						}
 						//player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
 						//player[GameObject.Player.config.me].orientation = player[GameObject.Player.config.me].mouse.orientation;
@@ -410,9 +428,14 @@ GameObject = {
 					) { continue; }
 
 				if ((object = GameObject.Physicx.isColision(player[key].x, player[key].y, 30, key))) {
-					GameObject.Player.removeLife(object, 1);
-					player[key].vitesse = 0;
-					continue;
+					//GameObject.Player.removeLife(object, 1);
+					if (!player[key].colision) {
+						player[key].orientation = player[key].orientation + 180;
+						GameObject.Player.removeLife(key, 25);
+					}
+					player[key].colision = true;
+				} else {
+					player[key].colision = false;
 				}
 
 				// Vérification de la distance pour l'arret des propulseurs.
@@ -421,16 +444,16 @@ GameObject = {
 				//	return;
 				}*/
 
-				if (player[key].lastorientation != 0) {
+				if (player[key].lastorientation != 0 && !player[key].colision) {
 
 					player[key].x +=
 						(Math.cos((player[key].lastorientation)*Math.PI/180) +
-						Math.cos((player[key].orientation)*Math.PI/180)/2) *
+						Math.cos((player[key].orientation)*Math.PI/180))/2 *
 						-player[key].vitesse;
 
 					player[key].y +=
 						(Math.sin((player[key].lastorientation)*Math.PI/180) +
-						Math.sin((player[key].orientation)*Math.PI/180)/2) *
+						Math.sin((player[key].orientation)*Math.PI/180))/2 *
 						-player[key].vitesse;
 
 
