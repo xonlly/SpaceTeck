@@ -1,5 +1,5 @@
 # SpaceTeck
-Jeu vidéo spacial en javaScript / NodeJS / Canvas.
+Jeu vidéo spatial en javaScript / NodeJS / Canvas.
 
 # Client
 
