@@ -219,45 +219,7 @@
 				}
 			}
 
-			if (false) {
-				var botsDebiles = [];
-
-				// Bots débiles.
-				var btName = 'Debile ';
-				for (var i = 0; i <= 50; i++) {
-					botsDebiles[i] = GameObject.Player.set(btName+i);
-				};
-
-				setInterval(function () {
-
-					for (var i = 0; i <= 50; i++) {
-							/*if (botsDebiles[i] == undefined) {
-								delete botsDebiles[i];
-								return;
-							}*/
-							if (Math.floor((Math.random() * 2)+1) == 2) {
-								botsDebiles[i].vitesse += botsDebiles[i].vitesse > 15 ? 15 : Math.floor((Math.random() * 2)+1);
-								botsDebiles[i].mouse.orientation = botsDebiles[i].orientation += Math.floor((Math.random() * 35) + 1);;
-
-							} else {
-								botsDebiles[i].mouse.orientation = botsDebiles[i].orientation -= Math.floor((Math.random() * 35) + 1);;
-								botsDebiles[i].vitesse -= botsDebiles[i].vitesse < 0 ? 0 : Math.floor((Math.random() * 2)+1);
-							}
-
-							if (Math.floor((Math.random() * 2)+1) == 2) {
-								GameObject.Bullet.set(btName+i);
-							}
-							GameObject.Multiplayer.update(btName+i, botsDebiles[i]);
-					}
-
-
-
-
-				}, 1000);
-			}
-
 			//GameObject.newPlayer();
-
 			document.querySelector("#toGo").onclick = function () {
 				CheckToStart();
 			};
@@ -282,7 +244,7 @@
 				<div id="tchatZone">
 					<span class="msg"><b>Xonlly: </b> Good Game !</span><br />
 					<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Jeux toujours en développement</span><br />
-					<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Bientôt sur GitHub !</span><br />
+					<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Lien du <a href="https://github.com/xonlly/SpaceTeck">GitHub</a> !</span><br />
 
 				</div>
 				<input id="TextChat" type="text" placeholder="Message" />

@@ -34,7 +34,7 @@ GameObject = {
 
 		setInterval(function () {
 			GameObject.Player.regenMana();
-		}, 2000);
+		}, 1000);
 
 		setInterval(function () {
 			VisualObject.drawInterfaceVariables();
@@ -488,7 +488,7 @@ GameObject = {
 				if (GameObject.Player.isActive(key)) { continue; }
 
 				if (player[key].stats.mana < 100) {
-					player[key].stats.mana += 2;
+					player[key].stats.mana += 4;
 					if (player[key].stats.mana > 100) {
 						player[key].stats.mana = 100;
 					}
@@ -589,11 +589,15 @@ GameObject = {
 	},
 
 	Engine : function () {
+		var lastEmitArray = '';
 		setInterval(function () {
 
-			socket.emit('player', {pid: GameObject.Player.config.me, donnees: player[GameObject.Player.config.me]});
+			if (lastEmitArray != JSON.stringify(player[GameObject.Player.config.me])) {
+				socket.emit('player', {pid: GameObject.Player.config.me, donnees: player[GameObject.Player.config.me]});
+			}
 
-		}.bind(this), 20);
+			lastEmitArray = JSON.stringify(player[GameObject.Player.config.me]);
+		}.bind(this), 100);
 
 		setInterval(function () {
 			// Gestion de l'appui des touches

@@ -4,8 +4,11 @@
 var express 	= require('express');
 var app 		= express();
 var server 		= require('http').Server(app);
+
 var map 		= require('./scripts_server/Map.js');
 var Mapping		= require('./scripts_server/ImageMapping.js');
+var Players		= require('./scripts_server/Players.js');
+var IA			= require('./scripts_server/IA.js');
 
 var config		= {
 	xp : { diePlayerPoints : 50 },
@@ -101,6 +104,7 @@ setTimeout(function () {
 			};
 
 			data = map.movePlayer(data);
+			//console.log(data);
 			io.emit('player', data);
 		});
 
@@ -136,3 +140,6 @@ setInterval(function () { // Envoi de la map pour chaque player
 		}
 	}
 }, 1000);
+
+IA.set({ players : Players, io : io });
+IA.engine();
