@@ -12,10 +12,13 @@ GameObject = {
 
 		document.addEventListener("keypress", function (e) {
 			//e.preventDefault();
-			if (e.charCode == 114) {
+			if (e.charCode == 114) { // r
 				if (player[GameObject.Player.config.me].die) {
 					GameObject.Player.respawn(GameObject.Player.config.me);
 				}
+			}
+			if (e.charCode == 75) { // k
+				GameObject.Player.respawn(GameObject.Player.config.me);
 			}
 		}.bind(this));
 
@@ -229,6 +232,13 @@ GameObject = {
 			}
 			return vitesse;
 		},
+		addVect : function (obj, angle, force)
+        {
+            var vectR = {angle : 0, vitesse: 0};
+            vectR.vitesse = Math.sqrt(obj.vitesse*obj.vitesse + force*force - 2*obj.vitesse*force * Math.cos(angle));
+            vectR.angle = Math.acos((obj.vitesse*obj.vitesse + vectR.vitesse*vectR.vitesse - force*force) / 2*obj.vitesse*vectR.vitesse);
+            return vectR;
+        },
 
 	},
 
@@ -258,13 +268,24 @@ GameObject = {
 				switch (listKeysPush[keyCode]) {
 					case 90:
 					case 38: // Up
+                        var vectR = GameObject.Physicx.addVect(
+                        	player[GameObject.Player.config.me],
+                            player[GameObject.Player.config.me].mouse.orientation,
+                            0.1
+                        );
 
-						if (player[GameObject.Player.config.me].vitesse < 15) {
-							player[GameObject.Player.config.me].vitesse += 0.35;
-						}
-						player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
-						player[GameObject.Player.config.me].orientation 	= player[GameObject.Player.config.me].mouse.orientation;
-					break;
+                        player[GameObject.Player.config.me].vitesse = vectR.vitesse;
+                        if (vectR.vitesse > 10) {vectR.vitesse = 10;}
+ player[GameObject.Player.config.me].orientation = player[GameObject.Player.config.me].orientation + vectR.angle;
+
+                        /*if (player[GameObject.Player.config.me].vitesse < 15) {
+ player[GameObject.Player.config.me].vitesse += 0.35;
+                        }
+ player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
+ player[GameObject.Player.config.me].orientation     = player[GameObject.Player.config.me].mouse.orientation;
+                        */
+                        /** FIN A REFAIRE **/
+                    break; 
 
 					case 83:
 					case 40: // Down
@@ -443,7 +464,7 @@ GameObject = {
 				if (player[key].distance < 150 && player[key].vitesse > 0) {
 				//	return;
 				}*/
-
+				/*
 				if (player[key].lastorientation != 0 && !player[key].colision) {
 
 					player[key].x +=
@@ -461,6 +482,9 @@ GameObject = {
 					player[key].x += Math.cos((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
 					player[key].y += Math.sin((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
 				}
+				*/
+				player[key].x += Math.cos((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
+                player[key].y += Math.sin((player[key].orientation)*Math.PI/180) * -player[key].vitesse; 
 
 				newPos = GameObject.Physicx.getGravityEffect(player[key].x, player[key].y, player[key].vitesse, player[key].orientation);
 				player[key].x = newPos.x;
