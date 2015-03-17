@@ -1,6 +1,7 @@
 function CheckToStart() {
 	LoadingCur++;
-	document.querySelector("#loadingEtat").innerHTML = LoadingCur + '/' + LoadingNB + ' - '+(LoadingCur*100/LoadingNB).toFixed(0)+'%';
+	document.querySelector("#loadingEtat").innerHTML = LoadingCur + '/' + (LoadingNB-1) + ' - '+(LoadingCur*100/(LoadingNB-1)).toFixed(0)+'%';
+	document.querySelector("#LoadDomZone .LoadingProgress div").style.width = (LoadingCur*100/(LoadingNB-1))+'%';
 	if (LoadingCur == LoadingNB) {
 		StartPlayer();
 	}
