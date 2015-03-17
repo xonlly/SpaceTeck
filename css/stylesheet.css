@@ -58,7 +58,7 @@ canvas {
 }
 
 #LoadDomZone {
-	background: transparent url("/images/501296.jpg") repeat scroll center center;
+	background: transparent url("/images/501296.jpg") repeat scroll top left;
 	position: absolute;
 	top: 0px;
 	left: 0px;
@@ -69,6 +69,7 @@ canvas {
 #loadingZone {
 	margin-top: 40px;
 	opacity: 0.5;
+	color: rgb(0, 175, 203);
 }
 
 #loadingEtat {
