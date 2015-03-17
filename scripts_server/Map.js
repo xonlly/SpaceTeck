@@ -163,9 +163,7 @@ module.exports = {
 
 	saveMap : function (name, map) {
 		var fs = require('fs');
-		var writeStream = fs.createWriteStream(__dirname+'/../Worlds/'+name+'.json');
-		writeStream.write(JSON.stringify(map));
-		writeStream.close();
+		fs.writeFileSync(__dirname+'/../Worlds/'+name+'.json', JSON.stringify(map));
 	},
 
 	getDistanceElements : function(x, y, x2, y2)

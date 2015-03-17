@@ -53,9 +53,7 @@ module.exports = {
 	
 	saveMapping : function (name, map) {
 		var fs = require('fs');
-		var writeStream = fs.createWriteStream(__dirname+'/../Worlds/'+name+'.map');
-		writeStream.write(JSON.stringify({name: name, map: map }));
-		writeStream.close();
+		fs.writeFileSync(__dirname+'/../Worlds/'+name+'.map', JSON.stringify({name: name, map: map }));
 	},
 
 	genImagesContact : function () {

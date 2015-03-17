@@ -69,7 +69,10 @@ if (process.argv[2] == 'gen') {
 		});
 		Mapping.genImagesContact();
 	}
+	console.log('Finish GEN');
+	process.exit(1);
 }
+
 world = map.getMap();
 
 // Nouveau thread:
