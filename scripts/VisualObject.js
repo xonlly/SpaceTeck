@@ -264,8 +264,8 @@ var VisualObject = {
 
 					this.ctx.strokeStyle = "white";
 					//this.ctx.strokeText(key+" "+(player[key].frame.x == undefined ? 0 : player[key].frame.x.toFixed(2))+"x "+(player[key].frame.y == undefined ? 0 :player[key].frame.y.toFixed(2))+"y", 40, -40);
-					this.ctx.strokeText(player[key].pseudo, 30, -30);
-					//this.ctx.strokeText(player[key].mouse.orientation.toFixed(4)+" deg", 40, -25);
+					//this.ctx.strokeText(player[key].pseudo, 30, -30);
+					this.ctx.strokeText(player[key].mouse.orientation.toFixed(4)+" deg", 40, -25);
 					
 					this.ctx.rotate((player[key].mouse.orientation-180)*Math.PI/180);
 
