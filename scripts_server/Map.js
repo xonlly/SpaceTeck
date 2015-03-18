@@ -178,7 +178,7 @@ module.exports = {
 				listToReturn.push(world[key]);
 			}
 		}
-		console.log(listToReturn);
+		//console.log(listToReturn);
 		return listToReturn;
 	}
 

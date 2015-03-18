@@ -81,7 +81,7 @@ setTimeout(function () {
 	io.on('connection', function (socket) {
 		console.log('Nouveau '+socket.id+' '+socket.request.connection.remoteAddress);
 
-		players[socket.id] = { socket: socket, pts: 0, cheat: 10 };
+		Players.config.players[socket.id] = { socket: socket, pts: 0, cheat: 10 };
 
 		// Modification de la zone de spawn pour chaque nouveau spawn.
 		playerSpawn = playerSpawn > 1500 ? 0 : playerSpawn + 150;
@@ -101,7 +101,7 @@ setTimeout(function () {
 		// Gestion des players.
 		socket.on('player', function (data) {
 
-			players[socket.id]['poss'] = {
+			Players.config.players[socket.id]['poss'] = {
 				x : data.donnees.x,
 				y : data.donnees.y
 			};
@@ -127,7 +127,7 @@ setTimeout(function () {
 		socket.on('disconnect', function () {
 			console.log('Disconnect '+socket.id);
 			io.emit('tchat', {pseudo: "Serveur", msg: "Disconnect "+socket.id});
-			delete players[socket.id];
+			delete Players.config.players[socket.id];
 			io.emit('bay', { pid: socket.id });
 		});
 	});
@@ -136,7 +136,9 @@ setTimeout(function () {
 }, 0);
 
 setInterval(function () { // Envoi de la map pour chaque player
+	var players = Players.config.players;
 	for (var key in players) {
+		if (players[key].bot) { continue; }
 		if (typeof players[key].poss != 'undefined') {
 			console.log(players[key].poss);
 			players[key].socket.emit('mapZone', map.sendWorldByPlayerMove(world, players[key].poss.x, players[key].poss.y));
