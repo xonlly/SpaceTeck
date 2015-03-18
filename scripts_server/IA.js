@@ -78,7 +78,7 @@ module.exports = {
 
 		// Execution du thread:
 		setInterval(function () {
-			this.draw();
+			if (this.config.obj.nbPlayers != 0) { this.draw(); }
 			if (this.config.debug) { console.log(Players.config.players[this.config.bot.keyLabel+i]); }
 		}.bind(this), 500);
 
@@ -157,10 +157,10 @@ module.exports = {
 		var allPlayers = Players.config.players;
 		for (var keyB in allPlayers) {
 			if (!allPlayers[keyB].bot) { continue; }
+			this.config.obj.nbPlayers = 0;
 			for (var keyP in allPlayers) {
-
 				if (allPlayers[keyP].bot || !allPlayers[keyP].poss) { continue; } // Ont n'envoi pas au bots :D
-
+				this.config.obj.nbPlayers++;
 				if (this.Math.getDistanceElements(
 					allPlayers[keyP].poss.x,
 					allPlayers[keyP].poss.y,

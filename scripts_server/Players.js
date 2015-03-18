@@ -4,7 +4,8 @@ module.exports = {
 	config : {
 		debug : false,
 		ready : false,
-		players : {}
+		players : {},
+		nbPlayers : 0,
 	},
 
 	get : function (pid)
@@ -34,6 +35,11 @@ module.exports = {
 		for (var key in this.config.players) {
 			this.config.players[key].x += Math.cos((this.config.players[key].orientation)*Math.PI/180) * -this.config.players[key].vitesse;
 			this.config.players[key].y += Math.sin((this.config.players[key].orientation)*Math.PI/180) * -this.config.players[key].vitesse;
+
+
+			// Temporaire, juste pour évité les sortie de map des bots.
+			if (this.config.players[key].x > 100000 || this.config.players[key].x < -100000) { this.config.players[key].x = 0 };
+			if (this.config.players[key].y > 100000 || this.config.players[key].y < -100000) { this.config.players[key].y = 0 };
 
 
 			this.config.players[key].vitesse = this.Physicx.getVitesseByOrientation(
