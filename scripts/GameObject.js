@@ -234,22 +234,12 @@ GameObject = {
 		},
 		addVect : function (obj, angle, force)
         {
-
-            /*var vectR = {angle : 0, vitesse: 0};
+			var vectR = {angle : 0, vitesse: 0};
             vectR.vitesse = Math.sqrt(obj.vitesse*obj.vitesse + force*force - 2*obj.vitesse*force * Math.cos(angle));
-            vectR.vitesse = obj.vitesse;
-            console.log((obj.orientation - obj.mouse.orientation));
-
-            var a = obj.mouse.orientation - obj.orientation;
-			a += (a>180) ? -360 : (a<-180) ? 360 : 0;
-
-            var fdsvjiop = (obj.vitesse * obj.vitesse) + (vectR.vitesse*vectR.vitesse) - (2*obj.vitesse*vectR.vitesse) * Math.cos(a);
-
-            console.log(fdsvjiop);
-            
-            //vectR.angle = Math.cos(((obj.vitesse * obj.vitesse) + (vectR.vitesse*vectR.vitesse) - (fdsvjiop*fdsvjiop)) / (2*obj.vitesse*vectR.vitesse));
-            vectR.angle = Math.cos(obj.vitesse * obj.vitesse + vectR.vitesse*vectR.vitesse - fdsvjiop*fdsvjiop / 2*obj.vitesse*vectR.vitesse) * Math.PI / 180;
-            return vectR;*/
+            vectR.angle = Math.cos((obj.vitesse*obj.vitesse + vectR.vitesse*vectR.vitesse - force*force) / 2*obj.vitesse*vectR.vitesse);
+            console.log("vitesse: "+obj.vitesse+" angle: "+angle+" force: "+force+"");
+            console.log(vectR);
+            return vectR;
         },
 
 	},
@@ -280,31 +270,24 @@ GameObject = {
 				switch (listKeysPush[keyCode]) {
 					case 90:
 					case 38: // Up
-						/*player[GameObject.Player.config.me].vitesse = 2;
-                        var vectR = GameObject.Physicx.addVect(
-                        	player[GameObject.Player.config.me],
-                            player[GameObject.Player.config.me].mouse.orientation,
-                            1
-                        );
+						var vectR = GameObject.Physicx.addVect(
+								player[GameObject.Player.config.me],
+								player[GameObject.Player.config.me].orientation - player[GameObject.Player.config.me].mouse.orientation,
+	                            1
+	                        );
 
-                        player[GameObject.Player.config.me].vitesse = vectR.vitesse;
-                        if (vectR.vitesse > 10) {vectR.vitesse = 10;}
- 						player[GameObject.Player.config.me].orientation += vectR.angle;
- 						console.log(player[GameObject.Player.config.me].orientation);
-
-                        if (player[GameObject.Player.config.me].vitesse < 15) {
-						player[GameObject.Player.config.me].vitesse += 0.35;
-						                    }
-						player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
-						player[GameObject.Player.config.me].orientation     = player[GameObject.Player.config.me].mouse.orientation;
-                        */
-
-                        if (player[GameObject.Player.config.me].vitesse < 15) {
-							player[GameObject.Player.config.me].vitesse += 0.35;
-						}
-						player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
-						player[GameObject.Player.config.me].orientation 	= player[GameObject.Player.config.me].mouse.orientation;
-                        /** FIN A REFAIRE **/
+						/*
+	                        player[GameObject.Player.config.me].vitesse = vectR.vitesse;	                        
+	                        player[GameObject.Player.config.me].orientation = 
+	                        	player[GameObject.Player.config.me].orientation + vectR.angle;
+//*/
+						///*
+	                        if (player[GameObject.Player.config.me].vitesse < 15) {
+	                        	player[GameObject.Player.config.me].vitesse += 0.35;
+	                        }
+	                        player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
+	                        player[GameObject.Player.config.me].orientation     = player[GameObject.Player.config.me].mouse.orientation;
+	                      //*/  
                     break; 
 
 					case 83:
