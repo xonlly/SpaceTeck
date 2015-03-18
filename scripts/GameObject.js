@@ -641,7 +641,7 @@ GameObject = {
 			}
 
 			lastEmitArray = JSON.stringify(player[GameObject.Player.config.me]);
-		}.bind(this), 100);
+		}.bind(this), 1000 / 40);
 
 		setInterval(function () {
 			// Gestion de l'appui des touches
