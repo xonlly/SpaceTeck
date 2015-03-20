@@ -2,13 +2,13 @@
 'use strict';
 
 var express 	= require('express');
-var app 		= express();
+var app 		  = express();
 var server 		= require('http').Server(app);
 
-var map 		= require('./scripts_server/Map.js');
+var map 		  = require('./scripts_server/Map.js');
 var Mapping		= require('./scripts_server/ImageMapping.js');
 var Players		= require('./scripts_server/Players.js');
-var IA			= require('./scripts_server/IA.js');
+var IA			  = require('./scripts_server/IA.js');
 
 var config		= {
 	xp : { diePlayerPoints : 50 },
@@ -22,7 +22,7 @@ server.listen(8183);
 app.use(function (req, res, next) {
 	/* Custom des headers pour des navigateurs qui pete les couilles */
 	res.header("Access-Control-Allow-Origin", "*");
-  	res.header("Access-Control-Allow-Headers", "X-Requested-With");
+	res.header("Access-Control-Allow-Headers", "X-Requested-With");
 	res.header("Access-Control-Allow-Credentials", "false");
 	res.header("X-Engine", "Devteck-Engine");
 
