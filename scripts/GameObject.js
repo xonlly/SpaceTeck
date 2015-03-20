@@ -109,6 +109,13 @@ GameObject = {
 		 * Clean this bullet removed by thread 1
 		 */
 		clean : function () {
+			for (var key in player) {
+				if (player[key].exitMap) {
+					console.log(player[key]);
+					delete player[key];
+				}
+			}
+
 			for (var key in this.config.arrList) {
 				if (this.config.arrList[key].life == undefined || this.config.arrList[key].life == NaN) {
 					delete this.config.arrList[key];
@@ -468,6 +475,11 @@ GameObject = {
 					// || GameObject.Player.notVisible(player[key].x, player[key].y)
 					) { continue; }
 
+				if (GameObject.Math.getDistanceElements(player[GameObject.Player.config.me].x, player[GameObject.Player.config.me].y, player[key].x, player[key].y) >= 3000) {
+					player[key].die = true;
+					continue;
+				}
+
 				if ((object = GameObject.Physicx.isColision(player[key].x, player[key].y, 30, key))) {
 					//GameObject.Player.removeLife(object, 1);
 					if (!player[key].colision) {
@@ -641,7 +653,7 @@ GameObject = {
 			}
 
 			lastEmitArray = JSON.stringify(player[GameObject.Player.config.me]);
-		}.bind(this), 100);
+		}.bind(this), 1000 / 40);
 
 		setInterval(function () {
 			// Gestion de l'appui des touches
