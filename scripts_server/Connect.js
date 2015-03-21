@@ -5,7 +5,6 @@ module.exports = function () {
     players : [],
     io : false,
 
-    _Sounds : require('../scripts_server/Sounds.js'),
     _Sockets : require('../scripts_server/Sockets.js')(),
 
     user : function (socket) {
@@ -29,9 +28,6 @@ module.exports = function () {
       _Sockets.tchat.connect(socket.id);
       _Sockets.newPlayer(socket);
 
-      this._Sounds.getListSound(function (list) {
-        socket.emit('sounds', list);
-      });
     }
   };
 

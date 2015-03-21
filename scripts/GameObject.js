@@ -72,6 +72,8 @@ GameObject = {
 				deleted: false,
 				dega: 10
 			};
+
+			new Audio('/sounds/effects/laserSimple.mp3').play();
 			socket.emit('bullet', {key: this.config.intBullet, donnees: this.config.arrList[this.config.intBullet]});
 		},
 
@@ -142,6 +144,9 @@ GameObject = {
 
 				shipDist = Math.sqrt(Math.pow((listItems[key].x - x), 2) + Math.pow((listItems[key].y - y), 2));
 				if (shipDist - elementSize < listItems[key].distance && shipDist != 0) {
+					var audio = new Audio('/sounds/effects/hitLaserSimple.mp3');
+					audio.volume = 0.05;
+					audio.play();
 					return key;
 				}
 
@@ -158,6 +163,9 @@ GameObject = {
 					for (var keyMap in imageMapped) {
 						shipDistMap = Math.sqrt(Math.pow((GameObject.MapServeur[key].x - nWidth + imageMapped[keyMap].x - x), 2) + Math.pow((GameObject.MapServeur[key].y - nHeight + imageMapped[keyMap].y - y), 2));
 						if (shipDistMap - elementSize < 10 && shipDistMap != 0) {
+							var audio = new Audio('/sounds/effects/hitLaserSimple.mp3');
+							audio.volume = 0.05;
+							audio.play();
 							return key;
 						}
 					}
@@ -253,7 +261,7 @@ GameObject = {
             var fdsvjiop = (obj.vitesse * obj.vitesse) + (vectR.vitesse*vectR.vitesse) - (2*obj.vitesse*vectR.vitesse) * Math.cos(a);
 
             console.log(fdsvjiop);
-            
+
             //vectR.angle = Math.cos(((obj.vitesse * obj.vitesse) + (vectR.vitesse*vectR.vitesse) - (fdsvjiop*fdsvjiop)) / (2*obj.vitesse*vectR.vitesse));
             vectR.angle = Math.cos(obj.vitesse * obj.vitesse + vectR.vitesse*vectR.vitesse - fdsvjiop*fdsvjiop / 2*obj.vitesse*vectR.vitesse) * Math.PI / 180;
             return vectR;*/
@@ -312,7 +320,7 @@ GameObject = {
 						player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
 						player[GameObject.Player.config.me].orientation 	= player[GameObject.Player.config.me].mouse.orientation;
                         /** FIN A REFAIRE **/
-                    break; 
+                    break;
 
 					case 83:
 					case 40: // Down
@@ -516,7 +524,7 @@ GameObject = {
 				}
 				*/
 				player[key].x += Math.cos((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
-                player[key].y += Math.sin((player[key].orientation)*Math.PI/180) * -player[key].vitesse; 
+                player[key].y += Math.sin((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
 
 				newPos = GameObject.Physicx.getGravityEffect(player[key].x, player[key].y, player[key].vitesse, player[key].orientation);
 				player[key].x = newPos.x;

@@ -13,6 +13,7 @@ module.exports = function () {
     _Map     : require('../scripts_server/Map.js'),
     _Gen     : require('../scripts_server/Gen.js')(),
     _IA      : require('../scripts_server/IA.js')(),
+    _Sounds  : require('../scripts_server/Sounds.js')(),
 
     init : function () {
       this._express = require('express');
@@ -46,6 +47,19 @@ module.exports = function () {
 
       // Serveur static pour l'interface.
       app.use(express.static(__dirname+'/../'));
+
+      // Send list sound
+      app.get('/sounds/*', function (req, res) {
+        console.log(req._parsedOriginalUrl.href);
+
+        if (req._parsedOriginalUrl.href=='/sounds/effects/') {
+          Server._Sounds.getListSoundEffects(function (list) {
+            res.send(JSON.stringify(list));
+          });
+        } else {
+          res.send('err');
+        }
+      });
 
     },
 
