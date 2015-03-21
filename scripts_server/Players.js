@@ -6,6 +6,8 @@ module.exports = {
 		ready : false,
 		players : {},
 		nbPlayers : 0,
+		playerSpawn : 0,
+		playerSpawnDist : 200,
 	},
 
 	get : function (pid)
@@ -24,6 +26,7 @@ module.exports = {
 		if (this.config.ready) { return; } else { this.config.ready = true; }
 
 		setInterval(function () {
+			if(this.config.nbPlayers == 0) { return; }
 			this.refresh();
 		}.bind(this), 1000 / 40);
 
@@ -183,7 +186,7 @@ module.exports = {
             var fdsvjiop = (obj.vitesse * obj.vitesse) + (vectR.vitesse*vectR.vitesse) - (2*obj.vitesse*vectR.vitesse) * Math.cos(a);
 
             console.log(fdsvjiop);
-            
+
             //vectR.angle = Math.cos(((obj.vitesse * obj.vitesse) + (vectR.vitesse*vectR.vitesse) - (fdsvjiop*fdsvjiop)) / (2*obj.vitesse*vectR.vitesse));
             vectR.angle = Math.cos(obj.vitesse * obj.vitesse + vectR.vitesse*vectR.vitesse - fdsvjiop*fdsvjiop / 2*obj.vitesse*vectR.vitesse) * Math.PI / 180;
             return vectR;*/

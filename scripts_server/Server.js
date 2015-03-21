@@ -12,6 +12,7 @@ module.exports = function () {
     _Players : require('../scripts_server/Players.js'),
     _Map     : require('../scripts_server/Map.js'),
     _Gen     : require('../scripts_server/Gen.js')(),
+    _IA      : require('../scripts_server/IA.js')(),
 
     init : function () {
       this._express = require('express');
@@ -70,9 +71,12 @@ module.exports = function () {
     mapServer : function () {
       var world = Server._Map.getMap();
       setInterval(function () { // Envoi de la map pour chaque player
+        // Juste pour les perfs
+        if (Server._Players.config.nbPlayers == 0) { return; }
+
       	var players = Server._Players.config.players;
       	for (var key in players) {
-
+          // Pour ne pas envoyer la map au bots ...
       		if (players[key].bot) { continue; }
 
       		if (typeof players[key].poss != 'undefined') {
@@ -84,6 +88,11 @@ module.exports = function () {
       	}
       }.bind(this), 1000);
     },
+
+    iaServer : function () {
+      Server._IA.engine();
+    },
+
   };
 
   return Server;

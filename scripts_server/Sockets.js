@@ -16,6 +16,10 @@ module.exports = function () {
       Socket.io = io;
     },
 
+    getIO : function () {
+      return Socket.io;
+    },
+
     tchat : {
       connect : function (pseudo) {
         if (Socket.config.debug) { console.log('New utilisateur: ' + pseudo); }
@@ -47,8 +51,7 @@ module.exports = function () {
 
       disconnect : function (socket, data) {
         if (Socket.config.debug) { console.log('Disconnect : ' + socket.id); }
-        //Socket.io.emit('tchat', {pseudo: "Serveur", msg: "Disconnect "+socket.id});
-        //  delete Players.config.players[socket.id];
+        delete Socket._Players.config.players[socket.id];
         Socket.io.emit('bay', { pid: socket.id });
       }
 
@@ -58,7 +61,9 @@ module.exports = function () {
     newPlayer : function (socket) {
 
       Socket._Players.config.players[socket.id] = { socket: socket, pts: 0, cheat: 10 };
-      socket.emit('hello', { id: socket.id, spawn: 300 });
+      Socket._Players.config.playerSpawn += Socket._Players.config.playerSpawnDist;
+      socket.emit('hello', { id: socket.id, spawn: Socket._Players.config.playerSpawn });
+      Socket._Players.config.nbPlayers++;
 
       socket.on('bullet', function (data) {
         Socket.game.bullet(socket, data);
@@ -77,6 +82,7 @@ module.exports = function () {
       });
 
       socket.on('disconnect', function (data) {
+        Socket._Players.config.nbPlayers--;
         Socket.game.disconnect(socket, data);
       });
 
