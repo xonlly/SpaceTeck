@@ -11,7 +11,7 @@ module.exports = function () {
 			},
 			bot : {
 				name : 'Debile ',
-				nb : 250,
+				nb : 20,
 				spawnDist : 100,
 				keyLabel : 'kbot',
 			}

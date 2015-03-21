@@ -20,10 +20,10 @@ module.exports = {
 			for (var y = 0; y < height; y++) {
 	        	for (var x = 0; x < width; x++) {
 	        		var idx = (width * y + x) << 2;
-	        		var rgba = { 
-	        			r: pixel[idx], 
-	        			g: pixel[idx+1], 
-	        			b: pixel[idx+2], 
+	        		var rgba = {
+	        			r: pixel[idx],
+	        			g: pixel[idx+1],
+	        			b: pixel[idx+2],
 	        			a: pixel[idx+3]
 	        		};
 	        		var pixelZone = { x: x, y: y, rgba : rgba};
@@ -32,17 +32,9 @@ module.exports = {
 					}
 				}
 			}
-			
+
 			console.log('Mapping '+imageName+' '+array.length+' pixels ready');
 
-			// Speed Test
-			/*console.log('SpeedStart');
-			for (var key in array) {
-				if (array[key].x == 403 && array[key].y == 779) {
-					console.log('inpact !');
-				}
-			}
-			console.log('SpeedEnd');*/
 			callback.call(this, name, array);
 		});
 	},
@@ -50,7 +42,7 @@ module.exports = {
 	setImages : function (arr) {
 		this.vars.images = arr;
 	},
-	
+
 	saveMapping : function (name, map) {
 		var fs = require('fs');
 		fs.writeFileSync(__dirname+'/../Worlds/'+name+'.map', JSON.stringify({name: name, map: map }));
@@ -65,10 +57,8 @@ module.exports = {
 				function (name, data) {
 					this.saveMapping(name, data);
 				}.bind(this));
-			
+
 		}
 	}
 
-
-
-}
+};
