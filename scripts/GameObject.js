@@ -254,7 +254,15 @@ GameObject = {
 				player[playerId].orientation - player[playerId].mouse.orientation + orientation,
                 2
             );
-			vectR.angle = vectR.angle * -1; 
+			if (
+					((player[playerId].orientation+180) < (player[playerId].mouse.orientation+180)) ||
+					((player[playerId].mouse.orientation+180) - (player[playerId].orientation+180) > 180) // --> encore buggé
+				)
+			{
+				// on ne fait rien: la condition sera à inverser probablement
+			} else {
+				vectR.angle = vectR.angle * -1;	
+			}
 			if (vectR.vitesse > 15) {vectR.vitesse = 15;} 
                 player[playerId].vitesse = vectR.vitesse;	                        
                 player[playerId].orientation = player[playerId].orientation + vectR.angle;
@@ -266,7 +274,7 @@ GameObject = {
 			if (vit == 0) {vit = 0.1;}
             vectR.vitesse = Math.sqrt(vit*vit + force*force - 2*vit*force * GameObject.Math.cosDeg(angle));
             vectR.angle = GameObject.Math.acosDeg((vit*vit + vectR.vitesse*vectR.vitesse - force*force) / (2*vit*vectR.vitesse));
-            console.log("vitesse3: "+vit+" angle: "+angle+" force: "+force+"");
+            console.log("vitesse: "+vit+" angle: "+angle+" force: "+force+"");
             console.log(vectR);
             return vectR;
         },
