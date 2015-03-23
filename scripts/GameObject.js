@@ -17,10 +17,10 @@ GameObject = {
 					GameObject.Player.respawn(GameObject.Player.config.me);
 				}
 			}
-			if (e.charCode == 75) { // k
+			if (e.charCode == 75) { // K
 				GameObject.Player.respawn(GameObject.Player.config.me);
 			}
-			
+			/*
 			if (e.charCode == 103) { // g
 				// On defini un angle et une vitesse;
 			    player[GameObject.Player.config.me].vitesse = 4;
@@ -34,7 +34,7 @@ GameObject = {
 				    player[GameObject.Player.config.me].mouse.orientation - player[GameObject.Player.config.me].orientation,
 				    5
 				);
-	        }
+	        }*/
 		}.bind(this));
 		document.addEventListener("keyup", function (e) {
 			this.Keyboard.set(e, 'up');
@@ -246,8 +246,17 @@ GameObject = {
 			}
 			return vitesse;
 		},
-		moveObj : function () {
-			
+		movePlayer : function (playerId, orientation) {
+			var orientationInit = player[playerId].orientation - player[playerId].mouse.orientation + orientation;
+			if (player[playerId].vitesse < 0.2) {orientationInit = orientation;}
+			var vectR = GameObject.Physicx.addVect(
+				player[playerId].vitesse,
+				player[playerId].orientation - player[playerId].mouse.orientation + orientation,
+                2
+            );
+			if (vectR.vitesse > 15) {vectR.vitesse = 15;} 
+                player[playerId].vitesse = vectR.vitesse;	                        
+                player[playerId].orientation = player[playerId].orientation + vectR.angle;
 		},
 		addVect : function (vitesseInit, angle, force)
         {
@@ -255,16 +264,9 @@ GameObject = {
 			var vit = vitesseInit;
 			if (vit == 0) {vit = 0.1;}
             vectR.vitesse = Math.sqrt(vit*vit + force*force - 2*vit*force * GameObject.Math.cosDeg(angle));
-            //vectR.angle = GameObject.Math.acosDeg((obj.vitesse*obj.vitesse + vectR.vitesse*vectR.vitesse - force*force) / 2*obj.vitesse*vectR.vitesse);
             vectR.angle = GameObject.Math.acosDeg((vit*vit + vectR.vitesse*vectR.vitesse - force*force) / (2*vit*vectR.vitesse));
             console.log("vitesse: "+vit+" angle: "+angle+" force: "+force+"");
-            //console.log(vectR);
-            //console.log('cos: '+Math.cos(angle));
-            //console.log('cos bis: '+GameObject.Math.cosDeg(90));
-            //console.log('b:'+obj.vitesse*obj.vitesse+'a: '+vectR.vitesse*vectR.vitesse+'c: '+force*force+'');
-            //console.log('num: '+(obj.vitesse*obj.vitesse + vectR.vitesse*vectR.vitesse - force*force));
-            //console.log('denum: '+2*obj.vitesse*vectR.vitesse);            
-            //console.log('total: '+(vitesse*vitesse + vectR.vitesse*vectR.vitesse - force*force) / (2*vitesse*vectR.vitesse));
+            console.log(vectR);
             return vectR;
         },
 
@@ -296,7 +298,6 @@ GameObject = {
 			return Math.cos(angle);
 		},
 		acosDeg : function (angle) {
-			//var angle = GameObject.Math.toRadians(angle);
 			return GameObject.Math.toDegrees(Math.acos(angle));
 		},
 	},
@@ -310,65 +311,20 @@ GameObject = {
 				switch (listKeysPush[keyCode]) {				
 					case 90:
 					case 38: // Up
-						var vectR = GameObject.Physicx.addVect(
-								player[GameObject.Player.config.me].vitesse,
-								player[GameObject.Player.config.me].orientation - player[GameObject.Player.config.me].mouse.orientation -180,
-	                            2
-	                        );
-
-						///*
-	                        player[GameObject.Player.config.me].vitesse = vectR.vitesse;	                        
-	                        player[GameObject.Player.config.me].orientation = 
-	                        	player[GameObject.Player.config.me].orientation + vectR.angle;
-//*/
-						/*
-	                        if (player[GameObject.Player.config.me].vitesse < 15) {
-	                        	player[GameObject.Player.config.me].vitesse += 0.35;
-	                        }
-	                        player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
-	                        player[GameObject.Player.config.me].orientation     = player[GameObject.Player.config.me].mouse.orientation;
-	                      //*/  
+						GameObject.Physicx.movePlayer(GameObject.Player.config.me, -180);
                     break; 
-
 					case 83:
 					case 40: // Down
-						var vectR = GameObject.Physicx.addVect(
-								player[GameObject.Player.config.me].vitesse,
-								player[GameObject.Player.config.me].orientation - player[GameObject.Player.config.me].mouse.orientation,
-	                            2
-	                        );
-
-						///*
-	                        player[GameObject.Player.config.me].vitesse = vectR.vitesse;	                        
-	                        player[GameObject.Player.config.me].orientation = 
-	                        	player[GameObject.Player.config.me].orientation + vectR.angle;
+						GameObject.Physicx.movePlayer(GameObject.Player.config.me, 0);
 					break;
 					case 81:
 					case 37: // Left
-						var vectR = GameObject.Physicx.addVect(
-								player[GameObject.Player.config.me].vitesse,
-								player[GameObject.Player.config.me].orientation - player[GameObject.Player.config.me].mouse.orientation - 90,
-	                            2
-	                        );
-
-						///*
-	                        player[GameObject.Player.config.me].vitesse = vectR.vitesse;	                        
-	                        player[GameObject.Player.config.me].orientation = 
-	                        	player[GameObject.Player.config.me].orientation + vectR.angle;
+						GameObject.Physicx.movePlayer(GameObject.Player.config.me, -90);
 					break;
 					case 68:
 					case 39: // Right
-						var vectR = GameObject.Physicx.addVect(
-								player[GameObject.Player.config.me].vitesse,
-								player[GameObject.Player.config.me].orientation - player[GameObject.Player.config.me].mouse.orientation + 90,
-	                            2
-	                        );
-						///*
-	                        player[GameObject.Player.config.me].vitesse = vectR.vitesse;	                        
-	                        player[GameObject.Player.config.me].orientation = 
-	                        	player[GameObject.Player.config.me].orientation + vectR.angle;
+						GameObject.Physicx.movePlayer(GameObject.Player.config.me, 90);
 					break;
-
 					case 32: // Espace
 						GameObject.Bullet.set(GameObject.Player.config.me);
 					break;
