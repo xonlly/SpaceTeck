@@ -248,12 +248,13 @@ GameObject = {
 		},
 		movePlayer : function (playerId, orientation) {
 			var orientationInit = player[playerId].orientation - player[playerId].mouse.orientation + orientation;
-			if (player[playerId].vitesse < 0.2) {orientationInit = orientation;}
+			if (player[playerId].vitesse < 0.2) {orientationInit = orientation;}			
 			var vectR = GameObject.Physicx.addVect(
 				player[playerId].vitesse,
 				player[playerId].orientation - player[playerId].mouse.orientation + orientation,
                 2
             );
+			vectR.angle = vectR.angle * -1; 
 			if (vectR.vitesse > 15) {vectR.vitesse = 15;} 
                 player[playerId].vitesse = vectR.vitesse;	                        
                 player[playerId].orientation = player[playerId].orientation + vectR.angle;
@@ -265,7 +266,7 @@ GameObject = {
 			if (vit == 0) {vit = 0.1;}
             vectR.vitesse = Math.sqrt(vit*vit + force*force - 2*vit*force * GameObject.Math.cosDeg(angle));
             vectR.angle = GameObject.Math.acosDeg((vit*vit + vectR.vitesse*vectR.vitesse - force*force) / (2*vit*vectR.vitesse));
-            console.log("vitesse: "+vit+" angle: "+angle+" force: "+force+"");
+            console.log("vitesse3: "+vit+" angle: "+angle+" force: "+force+"");
             console.log(vectR);
             return vectR;
         },
@@ -297,8 +298,15 @@ GameObject = {
 			var angle = GameObject.Math.toRadians(angle);
 			return Math.cos(angle);
 		},
+		sinDeg : function (angle) {
+			var angle = GameObject.Math.toRadians(angle);
+			return Math.sin(angle);
+		},
 		acosDeg : function (angle) {
 			return GameObject.Math.toDegrees(Math.acos(angle));
+		},
+		asinDeg : function (angle) {
+			return GameObject.Math.toDegrees(Math.asin(angle));
 		},
 	},
 
