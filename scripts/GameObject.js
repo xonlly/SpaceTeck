@@ -17,11 +17,25 @@ GameObject = {
 					GameObject.Player.respawn(GameObject.Player.config.me);
 				}
 			}
-			if (e.charCode == 75) { // k
+			if (e.charCode == 75) { // K
 				GameObject.Player.respawn(GameObject.Player.config.me);
 			}
+			/*
+			if (e.charCode == 103) { // g
+				// On defini un angle et une vitesse;
+			    player[GameObject.Player.config.me].vitesse = 4;
+			    player[GameObject.Player.config.me].orientation = 90;
+			}
+	        if (e.charCode == 104) { // h
+				// On defini une force et une orientation
+				player[GameObject.Player.config.me].mouse.orientation = 180;
+				var vectR = GameObject.Physicx.addVect(
+				    player[GameObject.Player.config.me].vitesse,
+				    player[GameObject.Player.config.me].mouse.orientation - player[GameObject.Player.config.me].orientation,
+				    5
+				);
+	        }*/
 		}.bind(this));
-
 		document.addEventListener("keyup", function (e) {
 			this.Keyboard.set(e, 'up');
 		}.bind(this));
@@ -72,8 +86,6 @@ GameObject = {
 				deleted: false,
 				dega: 10
 			};
-
-			new Audio('/sounds/effects/laserSimple.mp3').play();
 			socket.emit('bullet', {key: this.config.intBullet, donnees: this.config.arrList[this.config.intBullet]});
 		},
 
@@ -111,13 +123,6 @@ GameObject = {
 		 * Clean this bullet removed by thread 1
 		 */
 		clean : function () {
-			for (var key in player) {
-				if (player[key].exitMap) {
-					console.log(player[key]);
-					delete player[key];
-				}
-			}
-
 			for (var key in this.config.arrList) {
 				if (this.config.arrList[key].life == undefined || this.config.arrList[key].life == NaN) {
 					delete this.config.arrList[key];
@@ -144,9 +149,6 @@ GameObject = {
 
 				shipDist = Math.sqrt(Math.pow((listItems[key].x - x), 2) + Math.pow((listItems[key].y - y), 2));
 				if (shipDist - elementSize < listItems[key].distance && shipDist != 0) {
-					var audio = new Audio('/sounds/effects/hitLaserSimple.mp3');
-					audio.volume = 0.05;
-					audio.play();
 					return key;
 				}
 
@@ -163,9 +165,6 @@ GameObject = {
 					for (var keyMap in imageMapped) {
 						shipDistMap = Math.sqrt(Math.pow((GameObject.MapServeur[key].x - nWidth + imageMapped[keyMap].x - x), 2) + Math.pow((GameObject.MapServeur[key].y - nHeight + imageMapped[keyMap].y - y), 2));
 						if (shipDistMap - elementSize < 10 && shipDistMap != 0) {
-							var audio = new Audio('/sounds/effects/hitLaserSimple.mp3');
-							audio.volume = 0.05;
-							audio.play();
 							return key;
 						}
 					}
@@ -247,26 +246,38 @@ GameObject = {
 			}
 			return vitesse;
 		},
-		addVect : function (obj, angle, force)
-        {
+		
+		movePlayer : function (playerId, orientation) {
+			var orientationInit = player[playerId].orientation - player[playerId].mouse.orientation + orientation;
+			if (player[playerId].vitesse < 0.2) {orientationInit = orientation;}
+			var vectR = GameObject.Physicx.addVect(
+				player[playerId].vitesse,
+				player[playerId].orientation - player[playerId].mouse.orientation + orientation,
+                2
+            );
+			var mouseOrientation = player[playerId].mouse.orientation;
+			//var playerOrientation = player[playerId].orientation;
+			if ((player[playerId].mouse.orientation < -90) && (player[playerId].orientation > 90)) {mouseOrientation += 360;console.log('+360')}
+			if ((player[playerId].mouse.orientation > 90) && (player[playerId].orientation < -90)) {mouseOrientation -= 360;console.log('-360');}
+			if ((player[playerId].orientation+180) < (mouseOrientation+180)){} else {vectR.angle = vectR.angle * -1;}
+			if (vectR.vitesse > 15) {vectR.vitesse = 15;}
+            player[playerId].vitesse = vectR.vitesse;
+            player[playerId].orientation = player[playerId].orientation + vectR.angle;
+		},
 
-            /*var vectR = {angle : 0, vitesse: 0};
-            vectR.vitesse = Math.sqrt(obj.vitesse*obj.vitesse + force*force - 2*obj.vitesse*force * Math.cos(angle));
-            vectR.vitesse = obj.vitesse;
-            console.log((obj.orientation - obj.mouse.orientation));
-
-            var a = obj.mouse.orientation - obj.orientation;
-			a += (a>180) ? -360 : (a<-180) ? 360 : 0;
-
-            var fdsvjiop = (obj.vitesse * obj.vitesse) + (vectR.vitesse*vectR.vitesse) - (2*obj.vitesse*vectR.vitesse) * Math.cos(a);
-
-            console.log(fdsvjiop);
-
-            //vectR.angle = Math.cos(((obj.vitesse * obj.vitesse) + (vectR.vitesse*vectR.vitesse) - (fdsvjiop*fdsvjiop)) / (2*obj.vitesse*vectR.vitesse));
-            vectR.angle = Math.cos(obj.vitesse * obj.vitesse + vectR.vitesse*vectR.vitesse - fdsvjiop*fdsvjiop / 2*obj.vitesse*vectR.vitesse) * Math.PI / 180;
-            return vectR;*/
-        },
-
+		addVect : function (vitesseInit, angle, force)
+    {
+			var vectR = {angle : 0, vitesse: 0};
+			var vit = vitesseInit;
+			if (vit == 0) {vit = 0.1;}
+		    vectR.vitesse = Math.sqrt(vit*vit + force*force - 2*vit*force * GameObject.Math.cosDeg(angle));
+		    vectR.angle = GameObject.Math.acosDeg((vit*vit + vectR.vitesse*vectR.vitesse - force*force) / (2*vit*vectR.vitesse));
+		    if (vectR.angle > 180) {vectR.angle -= 360;}
+		    if (vectR.angle < -180) {vectR.angle += 360;}
+		    //console.log("vitesse3: "+vit+" angle: "+angle+" force: "+force+"");
+		    //console.log(vectR);
+		    return vectR;
+    	},
 	},
 
 	Math :
@@ -284,7 +295,26 @@ GameObject = {
 		{
 			return Math.sqrt(Math.pow((x - x2), 2) + Math.pow((y - y2), 2));
 		},
-
+		toRadians : function (angle) {
+		  return angle * (Math.PI / 180);
+		},
+		toDegrees : function (angle) {
+		  return angle * (180 / Math.PI);
+		},
+		cosDeg : function (angle) {
+			var angle = GameObject.Math.toRadians(angle);
+			return Math.cos(angle);
+		},
+		sinDeg : function (angle) {
+			var angle = GameObject.Math.toRadians(angle);
+			return Math.sin(angle);
+		},
+		acosDeg : function (angle) {
+			return GameObject.Math.toDegrees(Math.acos(angle));
+		},
+		asinDeg : function (angle) {
+			return GameObject.Math.toDegrees(Math.asin(angle));
+		},
 	},
 
 	Keyboard :
@@ -292,53 +322,24 @@ GameObject = {
 		push : function ()
 		{
 			for (var keyCode in listKeysPush) {
+				//console.log(listKeysPush[keyCode]);
 				switch (listKeysPush[keyCode]) {
 					case 90:
 					case 38: // Up
-						/*player[GameObject.Player.config.me].vitesse = 2;
-                        var vectR = GameObject.Physicx.addVect(
-                        	player[GameObject.Player.config.me],
-                            player[GameObject.Player.config.me].mouse.orientation,
-                            1
-                        );
-
-                        player[GameObject.Player.config.me].vitesse = vectR.vitesse;
-                        if (vectR.vitesse > 10) {vectR.vitesse = 10;}
- 						player[GameObject.Player.config.me].orientation += vectR.angle;
- 						console.log(player[GameObject.Player.config.me].orientation);
-
-                        if (player[GameObject.Player.config.me].vitesse < 15) {
-						player[GameObject.Player.config.me].vitesse += 0.35;
-						                    }
-						player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
-						player[GameObject.Player.config.me].orientation     = player[GameObject.Player.config.me].mouse.orientation;
-                        */
-
-                        if (player[GameObject.Player.config.me].vitesse < 15) {
-							player[GameObject.Player.config.me].vitesse += 0.35;
-						}
-						player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
-						player[GameObject.Player.config.me].orientation 	= player[GameObject.Player.config.me].mouse.orientation;
-                        /** FIN A REFAIRE **/
+						GameObject.Physicx.movePlayer(GameObject.Player.config.me, -180);
                     break;
-
 					case 83:
 					case 40: // Down
-						if (player[GameObject.Player.config.me].vitesse > -5) {
-							player[GameObject.Player.config.me].vitesse -= 0.6;
-						}
-						//player[GameObject.Player.config.me].lastorientation = player[GameObject.Player.config.me].orientation;
-						//player[GameObject.Player.config.me].orientation = player[GameObject.Player.config.me].mouse.orientation;
+						GameObject.Physicx.movePlayer(GameObject.Player.config.me, 0);
 					break;
-
+					case 81:
 					case 37: // Left
-
+						GameObject.Physicx.movePlayer(GameObject.Player.config.me, -90);
 					break;
-
+					case 68:
 					case 39: // Right
-
+						GameObject.Physicx.movePlayer(GameObject.Player.config.me, 90);
 					break;
-
 					case 32: // Espace
 						GameObject.Bullet.set(GameObject.Player.config.me);
 					break;
@@ -483,11 +484,6 @@ GameObject = {
 					// || GameObject.Player.notVisible(player[key].x, player[key].y)
 					) { continue; }
 
-				if (GameObject.Math.getDistanceElements(player[GameObject.Player.config.me].x, player[GameObject.Player.config.me].y, player[key].x, player[key].y) >= 3000) {
-					player[key].die = true;
-					continue;
-				}
-
 				if ((object = GameObject.Physicx.isColision(player[key].x, player[key].y, 30, key))) {
 					//GameObject.Player.removeLife(object, 1);
 					if (!player[key].colision) {
@@ -525,14 +521,14 @@ GameObject = {
 				*/
 				player[key].x += Math.cos((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
                 player[key].y += Math.sin((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
-
+/*
 				newPos = GameObject.Physicx.getGravityEffect(player[key].x, player[key].y, player[key].vitesse, player[key].orientation);
 				player[key].x = newPos.x;
 				player[key].y = newPos.y;
 				player[key].vitesse = newPos.vitesse;
 				player[key].orientation = newPos.orientation;
-
-				player[key].vitesse = GameObject.Physicx.getVitesseByOrientation(player[key].lastorientation, player[key].orientation, player[key].vitesse);
+*/
+				//player[key].vitesse = GameObject.Physicx.getVitesseByOrientation(player[key].lastorientation, player[key].orientation, player[key].vitesse);
 
 				// Envoi des informations au ship.
 				GameObject.ItemsMap.moveItem(key, player[key].x, player[key].y);
@@ -661,7 +657,7 @@ GameObject = {
 			}
 
 			lastEmitArray = JSON.stringify(player[GameObject.Player.config.me]);
-		}.bind(this), 1000 / 40);
+		}.bind(this), 100);
 
 		setInterval(function () {
 			// Gestion de l'appui des touches

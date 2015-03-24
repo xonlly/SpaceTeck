@@ -45,14 +45,9 @@
 		var imagesLoaded = {};
 		var imagesMapping = {};
 
-		var audioLoaded = { toPlay: {}};
+
 
 		function Load() {
-
-			var audio = new Audio('/sounds/audio/Stellardrone-OpenCluster.mp3');
-			audio.volume = 0.9;
-			audio.play();
-
 			document.querySelector("#LoadDomZone").style.width = ForceSizeWidth+"px";
 			imagesToLoad = {
 				backgroundRedBlue : '245765.jpg',
@@ -100,28 +95,8 @@
 				WorldImage : 'stock_planet_techno_fractal_by_svetlanaivanova-d5bg82w.png',
 				LuneImage : 'Lune_ico.png',
 			};
-
+			
 			var http_request = {};
-
-			// Audio !
-			var requestAudioFiles = new XMLHttpRequest();
-			var audioFilesToLoad = [];
-
-			requestAudioFiles.onreadystatechange  = function() {
-				if (this.readyState == 4) {
-					audioFilesToLoad = JSON.parse(this.responseText);
-					for (var key in audioFilesToLoad) {
-						LoadingNB++;
-						audioLoaded[audioFilesToLoad[key].name] = new Audio(audioFilesToLoad[key].link);
-						audioLoaded[audioFilesToLoad[key].name].onloadeddata = function (e) {
-							CheckToStart();
-							document.querySelector("#loadingZone").innerHTML += '['+e.timeStamp.toFixed(2)+'ms] - AUDIO: <i>'+audioFilesToLoad[key].name+" OK</i><br />";
-						}
-					}
-				}
-			}
-			requestAudioFiles.open("GET", "/sounds/effects/");
-			requestAudioFiles.send();
 
 			for (var key in imagesToLoad) {
 				LoadingNB++;
@@ -148,7 +123,7 @@
 
 					};
 					http_request[key].open("GET", 'Worlds/'+key+'.map', true);
-   				http_request[key].send();
+   					http_request[key].send();
 				}
 			}
 
@@ -167,7 +142,7 @@
 			<div class="LoadingProgress"><div></div></div>
 			<div><span id="loadingEtat">...</span>
 				<p id="loadingZone"></p>
-
+				
 			</div>
 		</div>
 		<div id="VisualGame">
