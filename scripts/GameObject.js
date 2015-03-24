@@ -246,9 +246,10 @@ GameObject = {
 			}
 			return vitesse;
 		},
+		
 		movePlayer : function (playerId, orientation) {
 			var orientationInit = player[playerId].orientation - player[playerId].mouse.orientation + orientation;
-			if (player[playerId].vitesse < 0.2) {orientationInit = orientation;}			
+			if (player[playerId].vitesse < 0.2) {orientationInit = orientation;}
 			var vectR = GameObject.Physicx.addVect(
 				player[playerId].vitesse,
 				player[playerId].orientation - player[playerId].mouse.orientation + orientation,
@@ -258,25 +259,25 @@ GameObject = {
 			//var playerOrientation = player[playerId].orientation;
 			if ((player[playerId].mouse.orientation < -90) && (player[playerId].orientation > 90)) {mouseOrientation += 360;console.log('+360')}
 			if ((player[playerId].mouse.orientation > 90) && (player[playerId].orientation < -90)) {mouseOrientation -= 360;console.log('-360');}
-			if ((player[playerId].orientation+180) < (mouseOrientation+180)){} else {vectR.angle = vectR.angle * -1;}	
+			if ((player[playerId].orientation+180) < (mouseOrientation+180)){} else {vectR.angle = vectR.angle * -1;}
 			if (vectR.vitesse > 15) {vectR.vitesse = 15;}
             player[playerId].vitesse = vectR.vitesse;
             player[playerId].orientation = player[playerId].orientation + vectR.angle;
 		},
+
 		addVect : function (vitesseInit, angle, force)
-        {
+    {
 			var vectR = {angle : 0, vitesse: 0};
 			var vit = vitesseInit;
 			if (vit == 0) {vit = 0.1;}
-            vectR.vitesse = Math.sqrt(vit*vit + force*force - 2*vit*force * GameObject.Math.cosDeg(angle));
-            vectR.angle = GameObject.Math.acosDeg((vit*vit + vectR.vitesse*vectR.vitesse - force*force) / (2*vit*vectR.vitesse));
-            if (vectR.angle > 180) {vectR.angle -= 360;}
-            if (vectR.angle < -180) {vectR.angle += 360;}
-            //console.log("vitesse3: "+vit+" angle: "+angle+" force: "+force+"");
-            //console.log(vectR);
-            return vectR;
-        },
-
+		    vectR.vitesse = Math.sqrt(vit*vit + force*force - 2*vit*force * GameObject.Math.cosDeg(angle));
+		    vectR.angle = GameObject.Math.acosDeg((vit*vit + vectR.vitesse*vectR.vitesse - force*force) / (2*vit*vectR.vitesse));
+		    if (vectR.angle > 180) {vectR.angle -= 360;}
+		    if (vectR.angle < -180) {vectR.angle += 360;}
+		    //console.log("vitesse3: "+vit+" angle: "+angle+" force: "+force+"");
+		    //console.log(vectR);
+		    return vectR;
+    	},
 	},
 
 	Math :
@@ -322,11 +323,11 @@ GameObject = {
 		{
 			for (var keyCode in listKeysPush) {
 				//console.log(listKeysPush[keyCode]);
-				switch (listKeysPush[keyCode]) {				
+				switch (listKeysPush[keyCode]) {
 					case 90:
 					case 38: // Up
 						GameObject.Physicx.movePlayer(GameObject.Player.config.me, -180);
-                    break; 
+                    break;
 					case 83:
 					case 40: // Down
 						GameObject.Physicx.movePlayer(GameObject.Player.config.me, 0);
@@ -519,7 +520,7 @@ GameObject = {
 				}
 				*/
 				player[key].x += Math.cos((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
-                player[key].y += Math.sin((player[key].orientation)*Math.PI/180) * -player[key].vitesse; 
+                player[key].y += Math.sin((player[key].orientation)*Math.PI/180) * -player[key].vitesse;
 /*
 				newPos = GameObject.Physicx.getGravityEffect(player[key].x, player[key].y, player[key].vitesse, player[key].orientation);
 				player[key].x = newPos.x;
