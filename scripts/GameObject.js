@@ -256,8 +256,8 @@ GameObject = {
             );
 			var mouseOrientation = player[playerId].mouse.orientation;
 			//var playerOrientation = player[playerId].orientation;
-			if ((player[playerId].mouse.orientation < -20) && (player[playerId].orientation > 20)) {mouseOrientation += 360;}
-			if ((player[playerId].mouse.orientation > 20) && (player[playerId].orientation < -20)) {mouseOrientation -= 360;}
+			if ((player[playerId].mouse.orientation < -90) && (player[playerId].orientation > 90)) {mouseOrientation += 360;console.log('+360')}
+			if ((player[playerId].mouse.orientation > 90) && (player[playerId].orientation < -90)) {mouseOrientation -= 360;console.log('-360');}
 			if ((player[playerId].orientation+180) < (mouseOrientation+180)){} else {vectR.angle = vectR.angle * -1;}	
 			if (vectR.vitesse > 15) {vectR.vitesse = 15;}
             player[playerId].vitesse = vectR.vitesse;
