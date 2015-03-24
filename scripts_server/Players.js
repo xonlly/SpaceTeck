@@ -81,34 +81,28 @@ module.exports = {
 	{
 		var player = this.config.players;
 		for (var key in player) {
-				var object;
-				if ((object = this.Physicx.isColision(player[key].x, player[key].y, 30, key, this.world))) {
-					if (!player[key].colision) {
-						//console.log(key+'Colision !!!!!');
-						  this.config.players[key].orientation += 180;
-							//GameObject.Player.removeLife(key, 25);
-						}
-
-						player[key].colision = true;
-				} else {
-					player[key].colision = false;
+			var object;
+			if ((object = this.Physicx.isColision(player[key].x, player[key].y, 30, key, this.world))) {
+				if (!player[key].colision) {
+			  	this.config.players[key].orientation += 180;
+					//GameObject.Player.removeLife(key, 25);
 				}
+				player[key].colision = true;
+			} else {
+				player[key].colision = false;
+			}
 
+			this.config.players[key].x += Math.cos((this.config.players[key].orientation)*Math.PI/180) * -this.config.players[key].vitesse;
+			this.config.players[key].y += Math.sin((this.config.players[key].orientation)*Math.PI/180) * -this.config.players[key].vitesse;
 
-				this.config.players[key].x += Math.cos((this.config.players[key].orientation)*Math.PI/180) * -this.config.players[key].vitesse;
-				this.config.players[key].y += Math.sin((this.config.players[key].orientation)*Math.PI/180) * -this.config.players[key].vitesse;
+			// Temporaire, juste pour évité les sortie de map des bots.
+			if (this.config.players[key].x > 100000 || this.config.players[key].x < -100000) { this.config.players[key].x = 0 };
+			if (this.config.players[key].y > 100000 || this.config.players[key].y < -100000) { this.config.players[key].y = 0 };
 
-
-				// Temporaire, juste pour évité les sortie de map des bots.
-				if (this.config.players[key].x > 100000 || this.config.players[key].x < -100000) { this.config.players[key].x = 0 };
-				if (this.config.players[key].y > 100000 || this.config.players[key].y < -100000) { this.config.players[key].y = 0 };
-
-
-				this.config.players[key].vitesse = this.Physicx.getVitesseByOrientation(
-					this.config.players[key].orientation, this.config.players[key].orientation, this.config.players[key].vitesse
-					);
+			this.config.players[key].vitesse = this.Physicx.getVitesseByOrientation(
+				this.config.players[key].orientation, this.config.players[key].orientation, this.config.players[key].vitesse
+			);
 		}
-
 	},
 
 	getAll : function ()
@@ -124,7 +118,7 @@ module.exports = {
 			this.playerObjects[keyP] = [];
 			for (var key in world) {
 				var planDist = Math.sqrt(Math.pow((world[key].x - players[keyP].x), 2) + Math.pow((world[key].y - players[keyP].y), 2));
-				if (planDist < 2000) {
+				if (planDist < 1000) {
 					this.playerObjects[keyP].push(world[key]);
 					//console.log(world[key]);
 				}
@@ -173,8 +167,6 @@ module.exports = {
 					var imageMapped = module.exports.imagesMapping[playerObjects[key].imageName];
 					//console.log(imageMapped)
 					for (var keyMap in imageMapped.map) {
-
-
 						var shipDistMap = Math.sqrt(Math.pow((playerObjects[key].x - nWidth + imageMapped.map[keyMap].x - x), 2) + Math.pow((playerObjects[key].y - nHeight + imageMapped.map[keyMap].y - y), 2));
 						//console.log(shipDistMap);
 						if (shipDistMap - elementSize < 10 && shipDistMap != 0) {
