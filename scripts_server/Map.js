@@ -92,6 +92,24 @@ module.exports = {
 	genMap : function () {
 		var finalMap = [];
 
+ 		var imagesI = {
+			planeteBlue : '110000.png',
+			planeteVenus : 'Mod_4_Image_3_venus_NASA.png',
+			planeteEarth : 'Mod_4_Image_4_earth_NASA.png',
+			planeteMars : 'Mod_4_Image_5_mars_NASA.png',
+			planeteJupiter : 'Mod_4_Image_6_jupiter_NASA.png',
+			planeteSaturn : 'Mod_4_Image_7_saturn_NASA.png',
+			planeteNeptune : 'Mod_4_Image_9_neptune_NASA.png',
+
+			asteroide : 'asteroide.png',
+			asteroideBlue : 'asteroide1.png',
+			asteroidesBare : 'asteroides.png',
+			asteroidesGroupe : 'asteroides1.png',
+			asteroideSeul : 'asteroides2.png',
+			WorldImage : 'stock_planet_techno_fractal_by_svetlanaivanova-d5bg82w.png',
+			LuneImage : 'Lune_ico.png',
+		};
+
 		var backgrounds = [
 			'backgroundRedBlue',
 			'backgroundOrangeBlue',
@@ -120,17 +138,27 @@ module.exports = {
 			'asteroideSeul',
 		];
 		var id = 0;
+		var sizeOf = require('image-size');
+
 		// X
 		for (var y = -200000; y <= this.config.mapSize.x; y += 1500) { // Par bande de 500px
 			for (var x = this.getRandomAsteroids()-100000; x <= this.config.mapSize.x; x += this.getRandomAsteroids()) {
 				var yGen = this.random(y, y+1500);
 				var pType = this.random(0, 5);
+				var size = { width: 0, height: 0 };
+				if (imagesI[asteroides[pType]]) {
+					var image = sizeOf('./images/'+imagesI[asteroides[pType]]);
+					size.width = image.width;
+					size.height = image.height;
+				}
+
 				id++;
 				finalMap.push({
 					x : x,
 					y : yGen,
 					name : 'A'+pType+'-'+id,
-					imageName : asteroides[pType]
+					imageName : asteroides[pType],
+					size: size
 				});
 			};
 		};
@@ -140,13 +168,20 @@ module.exports = {
 			for (var x = this.getRandomWorld()-200000; x <= this.config.mapSize.x; x += this.getRandomWorld()) {
 				var yGen = this.random(y, y+5000);
 				var pType = this.random(0, 8);
+				var size = { width: 0, height: 0 };
+				if (imagesI[planetes[pType]]) {
+					var image = sizeOf('./images/'+imagesI[planetes[pType]]);
+					size.width = image.width;
+					size.height = image.height;
+				}
 
 				id++;
 				finalMap.push({
 					x : x,
 					y : yGen,
 					name : 'W'+pType+'-'+id,
-					imageName : planetes[pType]
+					imageName : planetes[pType],
+					size: size
 				});
 			};
 		};
@@ -178,7 +213,7 @@ module.exports = {
 				listToReturn.push(world[key]);
 			}
 		}
-		console.log(listToReturn);
+		//console.log(listToReturn);
 		return listToReturn;
 	}
 

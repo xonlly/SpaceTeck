@@ -205,6 +205,8 @@ var VisualObject = {
 	draw : function () {
 		this.ctx = listMapsContext[1];
 
+		ServeurItems = GameObject.Bullet.config.arrList;
+
 		this.ctx.clearRect (0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 		this.ctx.beginPath();
 
@@ -240,13 +242,13 @@ var VisualObject = {
 
 
 			this.ctx.beginPath();
-			for (var key in GameObject.Bullet.config.arrList) {
+			for (var key in ServeurItems) {
 				if(
-					GameObject.Bullet.config.arrList[key].deleted || 
-					GameObject.Player.notVisible(GameObject.Bullet.config.arrList[key].x,GameObject.Bullet.config.arrList[key].y)) { continue; }
+					ServeurItems[key].deleted || 
+					GameObject.Player.notVisible(ServeurItems[key].x,ServeurItems[key].y)) { continue; }
 				this.ctx.save();
-					this.ctx.translate(GameObject.Bullet.config.arrList[key].x,GameObject.Bullet.config.arrList[key].y);
-					this.ctx.rotate((GameObject.Bullet.config.arrList[key].orientation-180)*Math.PI/180);
+					this.ctx.translate(ServeurItems[key].x,ServeurItems[key].y);
+					this.ctx.rotate((ServeurItems[key].orientation-180)*Math.PI/180);
 					this.ctx.strokeStyle = "yellow";
 					this.ctx.moveTo(-15, 0);
 					this.ctx.lineTo(15, 0);
@@ -264,8 +266,9 @@ var VisualObject = {
 
 					this.ctx.strokeStyle = "white";
 					//this.ctx.strokeText(key+" "+(player[key].frame.x == undefined ? 0 : player[key].frame.x.toFixed(2))+"x "+(player[key].frame.y == undefined ? 0 :player[key].frame.y.toFixed(2))+"y", 40, -40);
-					this.ctx.strokeText(player[key].pseudo, 30, -30);
-					//this.ctx.strokeText(player[key].mouse.orientation.toFixed(4)+" deg", 40, -25);
+					//this.ctx.strokeText(player[key].pseudo, 30, -30);
+					
+					this.ctx.strokeText((player[key].mouse.orientation*1+0).toFixed(4)+" deg | vitesse: "+player[key].vitesse.toFixed(4)+" orientation: "+((player[key].orientation+0).toFixed(4))+" deg", 40, -25);
 					
 					this.ctx.rotate((player[key].mouse.orientation-180)*Math.PI/180);
 
