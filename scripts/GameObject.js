@@ -40,7 +40,7 @@ GameObject = {
 			this.Keyboard.set(e, 'up');
 		}.bind(this));
 
-		document.addEventListener("click", function (e) {
+		document.querySelector("#gameInterface").addEventListener("click", function (e) {
 			e.preventDefault();
 			this.Bullet.set(GameObject.Player.config.me);
 

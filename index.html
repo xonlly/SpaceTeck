@@ -160,20 +160,36 @@
 			<div class="header">
 				<span>SpaceTeck</span>
 			</div>
-			<div class="login">
-				<input type="text" placeholder="Pseudo" id="pseudo" />
-				<input type="button" value="Go!" id="toGo" />
-			</div>
-			<div class="login">
-				<h2>Audio</h2>
-			</div>
-			<div class="tchatStyle">
-				<div id="tchatZone">
-					<span class="msg"><b>Xonlly: </b> Good Game !</span><br />
-					<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Jeux toujours en développement</span><br />
-					<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Lien du <a href="https://github.com/xonlly/SpaceTeck">GitHub</a> !</span><br />
+			<div class="content">
+				<div class="login">
+					<input type="text" placeholder="Pseudo" id="pseudo" />
+					<input type="button" value="Go!" id="toGo" />
 				</div>
-				<input id="TextChat" type="text" placeholder="Message" />
+				<div class="gameplay">
+					<h2>GamePlay</h2>
+					<div class="gFaction">Faction: <span>NaN</span></div>
+					<div class="gFaction">Groupe: <span>NaN</span></div>
+					<br />
+					<div class="gFaction">Gold(s): <span>0</span></div>
+					<div class="gFaction">Point(s): <span>0</span></div>
+				</div>
+				<div class="audio">
+					<h2>Audio</h2>
+					<label><input type="checkbox" value="1" onclick="CustomAudio.Volume.Mute(this.checked);">Muted</label><br />
+					<input type="range" value="100" onchange="CustomAudio.Volume.Change(this.value/100);" min="0" max="100">
+				</div>
+				<div class="admin">
+					<h1>Admin</h1>
+					<label><input type="checkbox" value="1" onclick="VisualObject.config.debug = this.checked;"> Debug Visuel</label>
+				</div>
+				<div class="tchatStyle">
+					<div id="tchatZone">
+						<span class="msg"><b>Xonlly: </b> Good Game !</span><br />
+						<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Jeux toujours en développement</span><br />
+						<span class="msg" style="color: #00DBFF"><b>Xonlly: </b> Lien du <a href="https://github.com/xonlly/SpaceTeck">GitHub</a> !</span><br />
+					</div>
+					<input id="TextChat" type="text" placeholder="Message" />
+				</div>
 			</div>
 		</div>
 	</body>

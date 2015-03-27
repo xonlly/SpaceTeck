@@ -3,7 +3,7 @@
 body {
 	background: black;
 	margin:0;
-
+	color: #00AFCB;
 }
 canvas {
 	cursor:none;
@@ -73,6 +73,10 @@ canvas {
 	color: rgb(0, 175, 203);
 }
 
+h1, h2, h3 {
+	font-family: 'steinerregular';
+}
+
 #loadingEtat {
 	font-family: 'steinerregular';
 	color: rgb(0, 218, 236);
@@ -119,6 +123,10 @@ canvas {
 	width: 250px;
 	background: rgba(21, 21, 21, 0.96);
 	border-left: 1px solid white;
+}
+
+#rightMenu .content {
+	padding: 5px;
 }
 
 #rightMenu .header {

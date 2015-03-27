@@ -7,8 +7,14 @@ var CustomAudio = {
   globalAudio : [],
 
   Volume : {
-    Mute : function () {
-      CustomAudio.muted = true;
+    Mute : function (etat) {
+      if (!etat) {
+        this.Change(1);
+        CustomAudio.config.muted = false;
+      } else {
+        this.Change(0);
+        CustomAudio.config.muted = true;
+      }
     },
 
     unMute : function () {
