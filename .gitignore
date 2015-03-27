@@ -16,6 +16,7 @@ local.properties
 .settings/
 .loadpath
 
+
 # External tool builders
 .externalToolBuilders/
 
@@ -216,3 +217,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+.ntvs_analysis.dat
+SpaceTeck.njsproj

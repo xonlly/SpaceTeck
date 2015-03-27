@@ -342,9 +342,12 @@ GameObject = {
 					case 39: // Right
 						GameObject.Physicx.movePlayer(GameObject.Player.config.me, 90);
 					break;
-					case 32: // Espace
-						GameObject.Bullet.set(GameObject.Player.config.me);
-					break;
+                    case 32:// Espace
+                        GameObject.Bullet.set(GameObject.Player.config.me);
+                        break;
+                    case 88:// X
+                        player[GameObject.Player.config.me].vitesse = 0;
+                        break;
 				};
 			}
 		},

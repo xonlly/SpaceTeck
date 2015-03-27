@@ -266,9 +266,11 @@ var VisualObject = {
 
 					this.ctx.strokeStyle = "white";
 					//this.ctx.strokeText(key+" "+(player[key].frame.x == undefined ? 0 : player[key].frame.x.toFixed(2))+"x "+(player[key].frame.y == undefined ? 0 :player[key].frame.y.toFixed(2))+"y", 40, -40);
-					//this.ctx.strokeText(player[key].pseudo, 30, -30);
-					
-					this.ctx.strokeText((player[key].mouse.orientation*1+0).toFixed(4)+" deg | vitesse: "+player[key].vitesse.toFixed(4)+" orientation: "+((player[key].orientation+0).toFixed(4))+" deg", 40, -25);
+					this.ctx.strokeText(player[key].pseudo, 30, -30);
+            
+                    if (VisualObject.config.debug) {
+                        this.ctx.strokeText((player[key].mouse.orientation * 1 + 0).toFixed(4) + " deg | vitesse: " + player[key].vitesse.toFixed(4) + " orientation: " + ((player[key].orientation + 0).toFixed(4)) + " deg", 40, -45);
+                    }
 					
 					this.ctx.rotate((player[key].mouse.orientation-180)*Math.PI/180);
 
