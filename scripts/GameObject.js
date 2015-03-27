@@ -86,6 +86,7 @@ GameObject = {
 				deleted: false,
 				dega: 10
 			};
+			CustomAudio.Play.bullet();
 			socket.emit('bullet', {key: this.config.intBullet, donnees: this.config.arrList[this.config.intBullet]});
 		},
 
@@ -94,6 +95,7 @@ GameObject = {
 			for (var key in this.config.arrList) {
 				if (object = GameObject.Physicx.isColision(this.config.arrList[key].x, this.config.arrList[key].y, 1, this.config.arrList[key].pid)) {
 					GameObject.Player.removeLife(object, this.config.arrList[key].dega);
+					CustomAudio.Play.hit();
 					this.config.arrList[key] = {};
 					continue;
 				}
@@ -246,7 +248,7 @@ GameObject = {
 			}
 			return vitesse;
 		},
-		
+
 		movePlayer : function (playerId, orientation) {
 			var orientationInit = player[playerId].orientation - player[playerId].mouse.orientation + orientation;
 			if (player[playerId].vitesse < 0.2) {orientationInit = orientation;}
@@ -487,6 +489,7 @@ GameObject = {
 				if ((object = GameObject.Physicx.isColision(player[key].x, player[key].y, 30, key))) {
 					//GameObject.Player.removeLife(object, 1);
 					if (!player[key].colision) {
+						CustomAudio.Play.hit();
 						player[key].orientation = player[key].orientation + 180;
 						GameObject.Player.removeLife(key, 25);
 					}

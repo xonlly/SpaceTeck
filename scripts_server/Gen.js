@@ -31,6 +31,7 @@ module.exports = function () {
 
     			WorldImage : 'stock_planet_techno_fractal_by_svetlanaivanova-d5bg82w.png',
     			LuneImage : 'Lune_ico.png',
+          iaParcourTest : 'iaParcourTest.png',
     		});
         Gen._Mapping.genImagesContact();
     	}
