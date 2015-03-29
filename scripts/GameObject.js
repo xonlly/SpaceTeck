@@ -324,7 +324,7 @@ GameObject = {
 		push : function ()
 		{
 			for (var keyCode in listKeysPush) {
-				//console.log(listKeysPush[keyCode]);
+				console.log(listKeysPush[keyCode]);
 				switch (listKeysPush[keyCode]) {
 					case 90:
 					case 38: // Up
@@ -347,6 +347,15 @@ GameObject = {
                         break;
                     case 88:// X
                         player[GameObject.Player.config.me].vitesse = 0;
+                        break;
+
+                    case 27:// ECHAP
+                        var etat = document.querySelector("#rightMenu").style.display;
+                        if (etat == 'none') {
+                            document.querySelector("#rightMenu").style.display = 'block';
+                        } else {
+                            document.querySelector("#rightMenu").style.display = 'none';
+                        }
                         break;
 				};
 			}

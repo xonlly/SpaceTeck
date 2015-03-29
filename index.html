@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="fr">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -41,7 +41,7 @@
 		var ForceSizeWidth  = 1400;
 
 		var ForceSizeHeight = window.innerHeight;
-		var ForceSizeWidth  = window.innerWidth - 250;
+		var ForceSizeWidth  = window.innerWidth/* - 250*/;
 		console.log(ForceSizeWidth);
 		var imagesLoaded = {};
 		var imagesMapping = {};
@@ -49,6 +49,24 @@
 
 
 		function Load() {
+
+		    window.addEventListener("resize", function () {
+		        ForceSizeHeight = window.innerHeight;
+		        ForceSizeWidth = window.innerWidth/* - 250*/;
+
+		        listMapsContext[1].canvas.width = ForceSizeWidth || window.innerWidth - 2;
+		        listMapsContext[1].canvas.height = ForceSizeHeight || window.innerHeight - 2;
+
+		        listMapsContext[3].canvas.width = ForceSizeWidth || window.innerWidth - 2;
+		        listMapsContext[3].canvas.height = ForceSizeHeight || window.innerHeight - 2;
+
+		        sizeZone = document.querySelector("#sizeZone");
+		        sizeZone.style = "width:" + listMapsContext[3].canvas.width + "px; height:" + listMapsContext[3].canvas.height + "px; position: absolute;";
+
+		        canvasWidth = ctx.canvas.width;
+		        canvasHeight = ctx.canvas.height;
+		    });
+
 			document.querySelector("#LoadDomZone").style.width = ForceSizeWidth+"px";
 			CustomAudio.Play.background();
 			imagesToLoad = {
@@ -56,7 +74,9 @@
 				backgroundOrangeBlue : '387332.jpg',
 				backgroundVioletVert : '397249.jpg',
 				backgroundOrangeViolet : '501296.jpg',
-				backgroundOraViolet : '548279.jpg',
+				backgroundOraViolet: '548279.jpg',
+				latest1 : 'latest1.png',
+				patternBackground : 'patternBackground.jpg',
 
 				planeteBlue : '110000.png',
 				planeteVenus : 'Mod_4_Image_3_venus_NASA.png',
@@ -151,11 +171,14 @@
 		</div>
 		<div id="VisualGame">
 			<div id="sizeZone">
-				<canvas id="mapZone" class="gameZone"></canvas>
 				<canvas id="gameZone" class="gameZone"></canvas>
 				<canvas id="gameInterface" class="gameZone"></canvas>
 			</div>
 		</div>
+        <div id="logo">
+            <h1>SpaceTeck</h1>
+            <h2>ALPHA</h2>
+        </div>
 		<div id="rightMenu">
 			<div class="header">
 				<span>SpaceTeck</span>

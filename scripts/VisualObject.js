@@ -8,13 +8,12 @@ var VisualObject = {
 	newMap : function () {
 
 
-		elem = document.querySelector("#gameZone");
+        elem = document.querySelector("#gameZone");
 		listMapsContext[1] = elem.getContext("2d");
 
-		elem = document.querySelector("#mapZone");
-		listMapsContext[2] = elem.getContext("2d");
+    
 		
-		elem = document.querySelector("#gameInterface");
+        elem = document.querySelector("#gameInterface");
 		listMapsContext[3] = elem.getContext("2d");
 
 		ctx = listMapsContext[1]; // Save du context pour chaque player.
@@ -34,7 +33,8 @@ var VisualObject = {
 		ctx.canvas.width  = ForceSizeWidth || window.innerWidth-2;
 			ctx.canvas.height = ForceSizeHeight || window.innerHeight-2;
 
-			pattern = ctx.createPattern(imagesLoaded['EtoilesImage'].image, 'repeat');
+            pattern = ctx.createPattern(imagesLoaded['EtoilesImage'].image, 'repeat');
+            patternBg = ctx.createPattern(imagesLoaded['patternBackground'].image, 'repeat');
 
 			listMapsContext[3].canvas.width  = ForceSizeWidth || window.innerWidth-2;
 			listMapsContext[3].canvas.height = ForceSizeHeight || window.innerHeight-2;
@@ -47,25 +47,17 @@ var VisualObject = {
 		canvasWidth 	= ctx.canvas.width;
 		canvasHeight 	= ctx.canvas.height;
 
-		listItems['earth'] = {
-			x: 500, y: 600, 
-			distance:155,
-			gravity: true, 
-			gravityRadius: 100, 
-			gravityLevel: 30, 
-			isMe: false
-		};
-
+/*
 		ctx2 = listMapsContext[2]; // Save du context pour chaque player.
 
 		ctx2.canvas.width  = ForceSizeWidth || window.innerWidth-2;
 			ctx2.canvas.height = ForceSizeHeight || window.innerHeight-2;
 
 			ctx2.drawImage(
-			imagesLoaded['backgroundOrangeViolet'].image, 
+			imagesLoaded['patternBackground'].image, 
 			0, 
 			0
-			);
+			);*/
 		
 	},
 
@@ -213,6 +205,17 @@ var VisualObject = {
 
 		this.ctx.save();
 
+        
+           /* this.ctx.save();
+        
+                this.ctx.translate(-player[GameObject.Player.config.me].frame.x / 10 + this.ctx.canvas.width / 2 - 20, -player[GameObject.Player.config.me].frame.y / 10 + this.ctx.canvas.height / 2);
+                this.ctx.rect(player[GameObject.Player.config.me].frame.x / 10 - this.ctx.canvas.width / 2 - 20, player[GameObject.Player.config.me].frame.y / 10 - this.ctx.canvas.height / 2, this.ctx.canvas.width, this.ctx.canvas.height);
+                //this.ctx.globalAlpha = 0.4;
+                this.ctx.fillStyle = patternBg;
+                this.ctx.fill();
+            this.ctx.restore();*/
+          // console.log('-' + (player[GameObject.Player.config.me].frame.x / 2 + this.ctx.canvas.width / 2 - 20) + 'px -' + (-player[GameObject.Player.config.me].frame.y / 2 + this.ctx.canvas.height / 2) + 'px');
+           document.querySelector("#gameZone").style.backgroundPosition = '-'+ (player[GameObject.Player.config.me].frame.x / 10 + this.ctx.canvas.width / 2 - 20) + 'px -' + (player[GameObject.Player.config.me].frame.y / 10 + this.ctx.canvas.height / 2) + 'px';
 
 			this.ctx.save();
 
@@ -250,10 +253,7 @@ var VisualObject = {
 				this.ctx.save();
 					this.ctx.translate(ServeurItems[key].x,ServeurItems[key].y);
 					this.ctx.rotate((ServeurItems[key].orientation-180)*Math.PI/180);
-					this.ctx.strokeStyle = "yellow";
-					this.ctx.moveTo(-15, 0);
-					this.ctx.lineTo(15, 0);
-					this.ctx.stroke();
+                    this.ctx.drawImage(imagesLoaded['latest1'].image, -24, -6);
 				this.ctx.restore();
 			}
 			this.ctx.beginPath();
@@ -469,16 +469,31 @@ var VisualObject = {
         this.addElementToCercle(ctx, -70000, 50000, 'rgba(4, 176, 25, 0.88)', 'Quete exemple', true);
         
         ctx.save();
-        ctx.beginPath();
-        ctx.arc(canvasWidth / 2, canvasHeight / 2, (canvasHeight / 2) - 150, 0, 2 * Math.PI, false);
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = 'rgba(0, 175, 203, 0.2)';
-        ctx.stroke();
-        ctx.beginPath();
-        ctx.arc(canvasWidth / 2, canvasHeight / 2, (canvasHeight / 2) - 200, 0, 2 * Math.PI, false);
-        ctx.lineWidth = 1;
-        ctx.strokeStyle = 'rgba(0, 175, 203, 0.2)';
-        ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(canvasWidth / 2, canvasHeight / 2, (canvasHeight / 2) - 150, 0, 2 * Math.PI, false);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(0, 175, 203, 0.2)';
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(canvasWidth / 2, canvasHeight / 2, (canvasHeight / 2) - 200, 0, 2 * Math.PI, false);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(0, 175, 203, 0.2)';
+            ctx.stroke();
+
+            ctx.beginPath();
+            var lifeDeg = (player[GameObject.Player.config.me].stats.life * 90 / 100);
+            ctx.arc(canvasWidth / 2, canvasHeight / 2, (canvasHeight / 2) - 202, 90*Math.PI/180, (90+ (lifeDeg > 0 ? lifeDeg : 0)) * Math.PI / 180, false);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = 'rgba(203, 0, 0, 0.5)';
+            ctx.stroke();
+        
+            ctx.beginPath();
+            manaDeg = (player[GameObject.Player.config.me].stats.mana * 90 / 100);
+            ctx.arc(canvasWidth / 2, canvasHeight / 2, (canvasHeight / 2) - 202, 180 * Math.PI / 180, (180+(manaDeg > 0 ? manaDeg : 0)) * Math.PI / 180, false);
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = 'rgba(0, 175, 203, 0.5)';
+            ctx.stroke();
         ctx.restore();
     },
 

@@ -18,6 +18,10 @@ canvas {
 	cursor:none;
 }
 
+#gameZone {
+    background: url('/images/patternBackground.jpg') repeat;
+}
+
 .playerDisplay {
 	position: absolute;
 	right:0;
@@ -84,6 +88,12 @@ canvas {
 
 h1, h2, h3 {
 	font-family: 'steinerregular';
+}
+
+#logo {
+    left:20px;
+    right:0;
+    position: absolute;
 }
 
 #loadingEtat {

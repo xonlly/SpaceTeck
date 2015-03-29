@@ -10,6 +10,9 @@ function CheckToStart() {
 
 
 function StartPlayer() {
+    
+    document.querySelector("#rightMenu").style.display = "none";
+
 	if (typeof io == 'undefined') {
 		alert('Récupération du JS IO impossible :/');
 	}
