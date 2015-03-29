@@ -207,7 +207,8 @@ var VisualObject = {
 
 		ServeurItems = GameObject.Bullet.config.arrList;
 
-		this.ctx.clearRect (0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        //this.ctx.clear(true);
 		this.ctx.beginPath();
 
 		this.ctx.save();
@@ -266,7 +267,7 @@ var VisualObject = {
 
 					this.ctx.strokeStyle = "white";
 					//this.ctx.strokeText(key+" "+(player[key].frame.x == undefined ? 0 : player[key].frame.x.toFixed(2))+"x "+(player[key].frame.y == undefined ? 0 :player[key].frame.y.toFixed(2))+"y", 40, -40);
-					this.ctx.strokeText(player[key].pseudo, 30, -30);
+					//this.ctx.strokeText(player[key].pseudo, 30, -30);
             
                     if (VisualObject.config.debug) {
                         this.ctx.strokeText((player[key].mouse.orientation * 1 + 0).toFixed(4) + " deg | vitesse: " + player[key].vitesse.toFixed(4) + " orientation: " + ((player[key].orientation + 0).toFixed(4)) + " deg", 40, -45);
@@ -447,6 +448,84 @@ var VisualObject = {
 
 		this.ctx.restore();
 		
+        this.showTargets(this.ctx);
 
-	}
+    },
+
+    showTargets : function (ctx)
+    {
+        for (var key in GameObject.MapServeur) {
+            this.addElementToCercle(ctx, GameObject.MapServeur[key].x, GameObject.MapServeur[key].y, 'rgba(242, 156, 0, 0.5)', GameObject.MapServeur[key].name);
+        }
+        for (var key in player) {
+            if (GameObject.Player.isActive(key)) { continue; }
+            this.addElementToCercle(ctx, player[key].x, player[key].y, 'red', player[key].pseudo);
+        }
+        this.addElementToCercle(ctx, 90000, 90000, 'rgba(0, 175, 203, 0.74)', 'Faction 1', true);
+        this.addElementToCercle(ctx, 90000, -90000, 'rgba(0, 175, 203, 0.74)', 'Faction 2', true);
+        this.addElementToCercle(ctx, -90000, -90000, 'rgba(0, 175, 203, 0.74)', 'Faction 3', true);
+        this.addElementToCercle(ctx, -90000, 90000, 'rgba(0, 175, 203, 0.74)', 'Faction 4', true);
+        
+        this.addElementToCercle(ctx, -70000, 50000, 'rgba(4, 176, 25, 0.88)', 'Quete exemple', true);
+        
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(canvasWidth / 2, canvasHeight / 2, (canvasHeight / 2) - 150, 0, 2 * Math.PI, false);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(0, 175, 203, 0.2)';
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(canvasWidth / 2, canvasHeight / 2, (canvasHeight / 2) - 200, 0, 2 * Math.PI, false);
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = 'rgba(0, 175, 203, 0.2)';
+        ctx.stroke();
+        ctx.restore();
+    },
+
+    addElementToCercle : function (ctx, x, y, color, name, nolimit) {
+        ctx.save();
+        ctx.beginPath();
+        ctx.translate(
+            canvasWidth / 2, canvasHeight / 2
+        );
+        
+        var OrientationLine = GameObject.Math.getAngleByPositions(
+            canvasWidth / 2, 
+                canvasHeight / 2,
+                x - player[GameObject.Player.config.me].x + (canvasWidth / 2),
+                y - player[GameObject.Player.config.me].y + (canvasHeight / 2)
+        );
+        
+        var DistanceLine = GameObject.Math.getDistanceElements(
+            canvasWidth / 2, 
+                canvasHeight / 2,
+                x - player[GameObject.Player.config.me].x + (canvasWidth / 2),
+                y - player[GameObject.Player.config.me].y + (canvasHeight / 2)
+        );
+        
+        if (DistanceLine > (canvasHeight / 2)-200 && (DistanceLine < 3000 || nolimit != undefined)) {
+            ctx.rotate(OrientationLine * Math.PI / 180);
+            ctx.moveTo(-(canvasHeight / 2) + 200 - (nolimit != undefined ? 50 : 0), 0);
+            ctx.lineTo(-(canvasHeight / 2) + 150 - (nolimit != undefined ? 100 : 0), 0);
+            ctx.save();
+            ctx.translate(-(canvasHeight / 2) + 115 -(nolimit != undefined ? 100 : 0) , 0);
+            ctx.rotate(-OrientationLine * Math.PI / 180);
+            ctx.font = 'italic 10pt Calibri';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = color;
+            ctx.fillText(DistanceLine.toFixed(0) + 'm', 0, 5);
+            ctx.fillText(name, 0, -5);
+            //ctx.globalAlpha = 0.5;
+            ctx.restore();
+            //ctx.lineCap = 'round';
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = color;
+            ctx.globalAlpha = DistanceLine < 1100 ? 0.9 : 0.2;
+        }
+        
+    
+            
+        ctx.stroke();
+        ctx.restore();
+    }
 };
