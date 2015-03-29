@@ -261,7 +261,8 @@ GameObject = {
 			//var playerOrientation = player[playerId].orientation;
 			if ((player[playerId].mouse.orientation < -90) && (player[playerId].orientation > 90)) {mouseOrientation += 360;console.log('+360')}
 			if ((player[playerId].mouse.orientation > 90) && (player[playerId].orientation < -90)) {mouseOrientation -= 360;console.log('-360');}
-			if ((player[playerId].orientation+180) < (mouseOrientation+180)){} else {vectR.angle = vectR.angle * -1;}
+			// if ((player[playerId].orientation+180+180-orientation) < (mouseOrientation+180)){} else {vectR.angle = vectR.angle * -1;} // A revoir
+			if ((player[playerId].orientation+180) < (mouseOrientation+180)){} else {vectR.angle = vectR.angle * -1;} // A revoir
 			if (vectR.vitesse > 15) {vectR.vitesse = 15;}
             player[playerId].vitesse = vectR.vitesse;
             player[playerId].orientation = player[playerId].orientation + vectR.angle;
@@ -276,7 +277,7 @@ GameObject = {
 		    vectR.angle = GameObject.Math.acosDeg((vit*vit + vectR.vitesse*vectR.vitesse - force*force) / (2*vit*vectR.vitesse));
 		    if (vectR.angle > 180) {vectR.angle -= 360;}
 		    if (vectR.angle < -180) {vectR.angle += 360;}
-		    //console.log("vitesse3: "+vit+" angle: "+angle+" force: "+force+"");
+		    console.log("vitesse5: "+vit+" angle: "+angle+" force: "+force+"");
 		    //console.log(vectR);
 		    return vectR;
     	},
